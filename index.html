@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONO PUBLIC</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080810;
+  --surface: #10101c;
+  --card: #13131f;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --text: #eeeef5;
+  --muted: #6b6b80;
+  --subtle: #2e2e40;
+  --green: #00f0a0;
+  --blue: #3d8bff;
+  --gold: #f5c842;
+  --red: #ff4d6a;
+  --purple: #a78bfa;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BG GLOW */
+body::before {
+  content: '';
+  position: fixed; top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse, rgba(0,240,160,0.04) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(8,8,16,0.85);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 60px;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 3px;
+  color: var(--text);
+}
+.logo span { color: var(--green); }
+
+.nav-pills { display: flex; gap: 6px; }
+.pill {
+  padding: 5px 16px; border-radius: 99px;
+  border: 1px solid var(--border2);
+  background: none; color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.18s;
+  letter-spacing: 0.5px;
+}
+.pill:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+.pill.on { background: var(--surface); color: var(--text); border-color: var(--border2); }
+.pill.on.t { color: var(--green); border-color: rgba(0,240,160,0.35); }
+.pill.on.f { color: var(--blue); border-color: rgba(61,139,255,0.35); }
+
+.nav-right {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1;
+  padding: 3.5rem 2rem 2.5rem;
+  max-width: 1080px; margin: 0 auto;
+}
+.hero-kicker {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--green); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-kicker::after {
+  content: ''; flex: 1; max-width: 60px;
+  height: 1px; background: var(--green); opacity: 0.4;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(56px, 9vw, 100px);
+  line-height: 0.9; letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+}
+.hero h1 .accent { color: var(--green); }
+.hero-desc {
+  font-size: 15px; color: var(--muted); max-width: 420px;
+  font-weight: 400; line-height: 1.6;
+}
+.hero-meta {
+  display: flex; gap: 2rem; margin-top: 2.5rem;
+  padding-top: 2rem; border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; line-height: 1; color: var(--text);
+}
+.meta-label {
+  font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+}
+
+/* SECTION HEADER */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+.sec-head {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 1.5rem;
+}
+.sec-tag {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2.5px;
+  padding: 5px 14px; border-radius: 99px;
+}
+.tag-t { background: rgba(0,240,160,0.1); color: var(--green); border: 1px solid rgba(0,240,160,0.2); }
+.tag-f { background: rgba(61,139,255,0.1); color: var(--blue); border: 1px solid rgba(61,139,255,0.2); }
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+.sec-info { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* MATCH CARD — AFFICHE STYLE */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+  position: relative;
+}
+.card:hover { transform: translateY(-3px); }
+.card.t:hover { border-color: rgba(0,240,160,0.25); }
+.card.f:hover { border-color: rgba(61,139,255,0.25); }
+
+/* CARD TOP BAR */
+.card-bar {
+  height: 3px;
+}
+.bar-t { background: linear-gradient(90deg, var(--green), transparent); }
+.bar-f { background: linear-gradient(90deg, var(--blue), transparent); }
+
+/* CARD INFO ROW */
+.card-info {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1.25rem 0;
+}
+.card-comp {
+  font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+}
+.card-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: var(--gold);
+  background: rgba(245,200,66,0.08);
+  padding: 3px 10px; border-radius: 99px;
+  border: 1px solid rgba(245,200,66,0.2);
+}
+
+/* AFFICHE — TEAMS */
+.affiche {
+  display: flex; align-items: center;
+  padding: 1.5rem 1.25rem 1rem;
+  gap: 1rem;
+}
+.team-block { flex: 1; }
+.team-block.right { text-align: right; }
+
+.team-flag { font-size: 28px; display: block; margin-bottom: 6px; line-height: 1; }
+.team-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 1px; line-height: 1;
+  color: var(--text); display: block;
+}
+.team-sub {
+  font-size: 11px; color: var(--muted);
+  margin-top: 4px; display: block;
+  font-weight: 400;
+}
+
+.vs-block {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex-shrink: 0;
+}
+.vs-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 3px;
+  color: var(--subtle);
+}
+.vs-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--subtle);
+}
+
+/* PRONO WINNER BOX */
+.winner-box {
+  margin: 0 1.25rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+}
+.winner-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--muted); margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.winner-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.winner-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px; letter-spacing: 1px; line-height: 1;
+  display: flex; align-items: center; gap: 10px;
+}
+.crown { font-size: 20px; }
+.winner-detail {
+  font-size: 12px; color: var(--muted);
+  margin-top: 6px; font-weight: 400;
+}
+
+/* PROBAS */
+.probas {
+  padding: 0.75rem 1.25rem;
+}
+.proba-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 7px;
+}
+.proba-name {
+  font-size: 12px; color: var(--muted); font-weight: 500;
+  width: 110px; flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.proba-track {
+  flex: 1; height: 5px; border-radius: 99px;
+  background: rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+.proba-fill {
+  height: 100%; border-radius: 99px;
+}
+.f-green { background: var(--green); }
+.f-blue { background: var(--blue); }
+.f-gray { background: var(--subtle); }
+.proba-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  width: 34px; text-align: right; flex-shrink: 0;
+}
+
+/* CHIP ROW */
+.chip-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0.75rem 1.25rem 1.25rem;
+  flex-wrap: wrap;
+}
+.chip {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 4px 12px; border-radius: 99px;
+}
+.chip-g { background: rgba(0,240,160,0.1); color: var(--green); border: 1px solid rgba(0,240,160,0.2); }
+.chip-y { background: rgba(245,200,66,0.1); color: var(--gold); border: 1px solid rgba(245,200,66,0.2); }
+.chip-b { background: rgba(61,139,255,0.1); color: var(--blue); border: 1px solid rgba(61,139,255,0.2); }
+.chip-r { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+.chip-text { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+/* TOMORROW NOTICE */
+.tomorrow-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 1.5rem;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 3rem;
+}
+.tomorrow-icon { font-size: 24px; }
+.tomorrow-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.tomorrow-text strong { color: var(--text); font-weight: 600; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 2rem; max-width: 1080px; margin: 0 auto;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 3px; color: var(--muted);
+}
+.footer-logo span { color: var(--green); }
+.footer-note { font-size: 11px; color: var(--muted); }
+
+/* PAGE SYSTEM */
+.page { display: none; }
+.page.on { display: block; }
+
+/* ANIMATIONS */
+@keyframes up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card { animation: up 0.35s ease both; }
+.card:nth-child(1) { animation-delay: 0s; }
+.card:nth-child(2) { animation-delay: 0.08s; }
+.card:nth-child(3) { animation-delay: 0.16s; }
+.card:nth-child(4) { animation-delay: 0.24s; }
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+  nav { padding: 0 1rem; }
+  .hero { padding: 2rem 1rem 1.5rem; }
+  .wrap { padding: 0 1rem; }
+  .hero h1 { font-size: 52px; }
+  .hero-meta { gap: 1.5rem; }
+  .nav-right { display: none; }
+  .team-name { font-size: 22px; }
+  .winner-name { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">PRONO<span> PUBLIC</span></div>
+  <div class="nav-pills">
+    <button class="pill on" id="pill-all" onclick="nav('all')">Tout</button>
+    <button class="pill t" id="pill-t" onclick="nav('t')">🎾 Monte Carlo</button>
+    <button class="pill f" id="pill-f" onclick="nav('f')">⚽ LDC</button>
+  </div>
+  <div class="nav-right">Mardi 7 Avril 2026</div>
+</nav>
+
+<!-- PAGE ALL -->
+<div class="page on" id="page-all">
+  <div class="hero">
+    <div class="hero-kicker">Pronostics du jour</div>
+    <h1>LES <span class="accent">AFFICHES</span><br>DU JOUR</h1>
+    <p class="hero-desc">Nos prédictions pour les matchs de Monte Carlo et les quarts de finale de la Ligue des Champions.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><span class="meta-val">6</span><span class="meta-label">Matchs analysés</span></div>
+      <div class="meta-item"><span class="meta-val" style="color:var(--green)">4</span><span class="meta-label">Tennis</span></div>
+      <div class="meta-item"><span class="meta-val" style="color:var(--blue)">2</span><span class="meta-label">LDC ce soir</span></div>
+      <div class="meta-item"><span class="meta-val" style="color:var(--gold)">21h</span><span class="meta-label">Coup d'envoi LDC</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- TENNIS -->
+    <div class="sec-head">
+      <span class="sec-tag tag-t">🎾 Rolex Monte Carlo Masters</span>
+      <div class="sec-line"></div>
+      <span class="sec-info">Terre battue · 2e tour</span>
+    </div>
+    <div class="grid" id="grid-t-all"></div>
+
+    <!-- LDC -->
+    <div class="sec-head">
+      <span class="sec-tag tag-f">⚽ Champions League</span>
+      <div class="sec-line"></div>
+      <span class="sec-info">Quarts de finale aller · 21h00</span>
+    </div>
+    <div class="grid" id="grid-f-all"></div>
+
+    <div class="tomorrow-box">
+      <span class="tomorrow-icon">📅</span>
+      <div class="tomorrow-text">
+        <strong>Demain mercredi 8 avril :</strong> PSG vs Liverpool et FC Barcelone vs Atlético de Madrid — deux nouveaux chocs en quarts de finale retour de LDC.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">PRONO<span> PUBLIC</span></div>
+    <div class="footer-note">Données officielles SportRadar · Pronostics non garantis</div>
+  </footer>
+</div>
+
+<!-- PAGE TENNIS -->
+<div class="page" id="page-t">
+  <div class="hero">
+    <div class="hero-kicker">Monte Carlo Masters 2026</div>
+    <h1>🎾 <span class="accent">TENNIS</span></h1>
+    <p class="hero-desc">Les affiches du 2e tour sur terre battue à Monaco.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><span class="meta-val" style="color:var(--green)">4</span><span class="meta-label">Matchs du jour</span></div>
+      <div class="meta-item"><span class="meta-val">Terre</span><span class="meta-label">Surface</span></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag tag-t">🎾 Rolex Monte Carlo Masters</span>
+      <div class="sec-line"></div>
+      <span class="sec-info">2e tour</span>
+    </div>
+    <div class="grid" id="grid-t-only"></div>
+  </div>
+  <footer>
+    <div class="footer-logo">PRONO<span> PUBLIC</span></div>
+    <div class="footer-note">Monte Carlo Masters · 7 avril 2026</div>
+  </footer>
+</div>
+
+<!-- PAGE LDC -->
+<div class="page" id="page-f">
+  <div class="hero">
+    <div class="hero-kicker">Ligue des Champions 2025/26</div>
+    <h1>⚽ <span class="accent">LDC</span></h1>
+    <p class="hero-desc">Quarts de finale aller ce soir à 21h00. Les plus grands clubs d'Europe s'affrontent.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><span class="meta-val" style="color:var(--blue)">2</span><span class="meta-label">Matchs ce soir</span></div>
+      <div class="meta-item"><span class="meta-val" style="color:var(--gold)">21h00</span><span class="meta-label">Coup d'envoi</span></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag tag-f">⚽ Champions League</span>
+      <div class="sec-line"></div>
+      <span class="sec-info">Quarts de finale aller · 21h00</span>
+    </div>
+    <div class="grid" id="grid-f-only"></div>
+    <div class="tomorrow-box">
+      <span class="tomorrow-icon">📅</span>
+      <div class="tomorrow-text">
+        <strong>Demain 8 avril :</strong> PSG vs Liverpool et FC Barcelone vs Atlético de Madrid.
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">PRONO<span> PUBLIC</span></div>
+    <div class="footer-note">Ligue des Champions · Quarts de finale</div>
+  </footer>
+</div>
+
+<script>
+const TENNIS = [
+  {
+    comp: '2e tour · Court Central',
+    time: '~11h40',
+    home: { flag: '🇫🇷', name: 'HUMBERT', sub: '#22 ATP' },
+    away: { flag: '🇮🇹', name: 'SINNER', sub: '#1 ATP · N°1 Mondial' },
+    winner: 'SINNER',
+    winnerColor: 'var(--green)',
+    detail: 'Sinner domine tout le circuit — victoire nette attendue en 2 sets',
+    probas: [
+      { name: 'Humbert', pct: 21, cls: 'f-gray' },
+      { name: 'Sinner', pct: 79, cls: 'f-green', highlight: true }
+    ],
+    chip: '<span class="chip chip-g">Grand favori</span>',
+    chipText: 'Victoire en 2 sets',
+    type: 't'
+  },
+  {
+    comp: '2e tour · Court Rainier III',
+    time: '~11h00',
+    home: { flag: '🇵🇱', name: 'HURKACZ', sub: '#9 ATP · Tête de série 7' },
+    away: { flag: '🇮🇹', name: 'DARDERI', sub: '#47 ATP' },
+    winner: 'HURKACZ',
+    winnerColor: 'var(--green)',
+    detail: 'Hurkacz bien armé sur terre, Darderi peut créer la surprise',
+    probas: [
+      { name: 'Hurkacz', pct: 63, cls: 'f-green', highlight: true },
+      { name: 'Darderi', pct: 37, cls: 'f-gray' }
+    ],
+    chip: '<span class="chip chip-g">Favori</span>',
+    chipText: 'Potentiel 3 sets',
+    type: 't'
+  },
+  {
+    comp: '2e tour · Court Central',
+    time: '~11h00',
+    home: { flag: '🇦🇷', name: 'ETCHEVERRY', sub: '#28 ATP' },
+    away: { flag: '🇧🇬', name: 'DIMITROV', sub: '#10 ATP' },
+    winner: 'ETCHEVERRY',
+    winnerColor: 'var(--gold)',
+    detail: 'Spécialiste de la terre battue — match ouvert, Etcheverry légèrement devant',
+    probas: [
+      { name: 'Etcheverry', pct: 56, cls: 'f-green', highlight: true, color: 'var(--gold)' },
+      { name: 'Dimitrov', pct: 44, cls: 'f-gray' }
+    ],
+    chip: '<span class="chip chip-y">Match serré</span>',
+    chipText: '3 sets probables',
+    type: 't'
+  },
+  {
+    comp: '2e tour · Court Rainier III',
+    time: '~11h00',
+    home: { flag: '🇪🇸', name: 'BAUTISTA AGUT', sub: '#38 ATP' },
+    away: { flag: '🇮🇹', name: 'BERRETTINI', sub: '#31 ATP' },
+    winner: 'BERRETTINI',
+    winnerColor: 'var(--green)',
+    detail: 'Berrettini en bonne forme sur surface lente — victoire attendue',
+    probas: [
+      { name: 'Bautista Agut', pct: 34, cls: 'f-gray' },
+      { name: 'Berrettini', pct: 66, cls: 'f-green', highlight: true }
+    ],
+    chip: '<span class="chip chip-g">Favori</span>',
+    chipText: 'Victoire en 2 ou 3 sets',
+    type: 't'
+  }
+];
+
+const FOOT = [
+  {
+    comp: 'Quart de finale aller · Santiago Bernabéu',
+    time: '21h00',
+    home: { flag: '⚪', name: 'REAL MADRID', sub: '🇪🇸 Espagne' },
+    away: { flag: '🔴', name: 'BAYERN MUNICH', sub: '🇩🇪 Allemagne' },
+    winner: 'BAYERN MUNICH',
+    winnerColor: 'var(--blue)',
+    detail: 'Faveur légère pour le Bayern — mais le Bernabéu est toujours dangereux',
+    probas: [
+      { name: 'Real Madrid', pct: 36, cls: 'f-gray' },
+      { name: 'Match nul', pct: 23, cls: 'f-gray' },
+      { name: 'Bayern Munich', pct: 41, cls: 'f-blue', highlight: true }
+    ],
+    chip: '<span class="chip chip-y">Match serré</span>',
+    chipText: 'Légère faveur Bayern · Choc ouvert',
+    type: 'f'
+  },
+  {
+    comp: 'Quart de finale aller · Alvalade · Lisbonne',
+    time: '21h00',
+    home: { flag: '🟢', name: 'SPORTING CP', sub: '🇵🇹 Portugal' },
+    away: { flag: '🔴', name: 'ARSENAL FC', sub: '🇬🇧 Angleterre' },
+    winner: 'ARSENAL FC',
+    winnerColor: 'var(--blue)',
+    detail: 'Arsenal en grande forme — a éliminé Leverkusen — favori clair à l\'extérieur',
+    probas: [
+      { name: 'Sporting CP', pct: 22, cls: 'f-gray' },
+      { name: 'Match nul', pct: 26, cls: 'f-gray' },
+      { name: 'Arsenal FC', pct: 52, cls: 'f-blue', highlight: true }
+    ],
+    chip: '<span class="chip chip-b">Favori clair</span>',
+    chipText: 'Arsenal supérieur sur le papier',
+    type: 'f'
+  }
+];
+
+function buildCard(m) {
+  const isT = m.type === 't';
+  const winCol = m.winnerColor;
+  const probaHTML = m.probas.map(p => `
+    <div class="proba-row">
+      <span class="proba-name">${p.name}</span>
+      <div class="proba-track"><div class="proba-fill ${p.cls}" style="width:${p.pct}%"></div></div>
+      <span class="proba-pct" style="${p.highlight ? `color:${p.color||winCol}` : 'color:var(--muted)'}">${p.pct}%</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="card ${m.type}">
+      <div class="card-bar bar-${m.type}"></div>
+      <div class="card-info">
+        <span class="card-comp">${m.comp}</span>
+        <span class="card-time">${m.time}</span>
+      </div>
+      <div class="affiche">
+        <div class="team-block">
+          <span class="team-flag">${m.home.flag}</span>
+          <span class="team-name">${m.home.name}</span>
+          <span class="team-sub">${m.home.sub}</span>
+        </div>
+        <div class="vs-block">
+          <div class="vs-dot"></div>
+          <span class="vs-text">VS</span>
+          <div class="vs-dot"></div>
+        </div>
+        <div class="team-block right">
+          <span class="team-flag">${m.away.flag}</span>
+          <span class="team-name">${m.away.name}</span>
+          <span class="team-sub">${m.away.sub}</span>
+        </div>
+      </div>
+      <div class="winner-box">
+        <div class="winner-label">Notre pronostic</div>
+        <div class="winner-name" style="color:${winCol}">
+          <span class="crown">🏆</span>${m.winner}
+        </div>
+        <div class="winner-detail">${m.detail}</div>
+      </div>
+      <div class="probas">${probaHTML}</div>
+      <div class="chip-row">${m.chip}<span class="chip-text">${m.chipText}</span></div>
+    </div>
+  `;
+}
+
+function fill(id, arr) {
+  document.getElementById(id).innerHTML = arr.map(buildCard).join('');
+}
+
+fill('grid-t-all', TENNIS);
+fill('grid-f-all', FOOT);
+
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('on','t','f'));
+  document.getElementById('page-' + id).classList.add('on');
+  const btn = document.getElementById('pill-' + id);
+  btn.classList.add('on');
+  if (id === 't') { btn.classList.add('t'); fill('grid-t-only', TENNIS); }
+  if (id === 'f') { btn.classList.add('f'); fill('grid-f-only', FOOT); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
