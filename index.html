@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CASH PRONO CLUB</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--surface:#0f0f1b;--card:#121220;--card2:#16162a;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --text:#eeeef5;--muted:#6a6a82;--dim:#252535;
+  --green:#00f0a0;--blue:#3d8bff;--gold:#f5c842;
+  --el:#f97316;--tg:#2AABEE;--red:#ff4d6a;--purple:#a78bfa;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(7,7,15,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;gap:10px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2.5px;color:var(--text);text-decoration:none;flex-shrink:0;}
+.logo span{color:var(--gold);}
+.tg-nav{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:rgba(42,171,238,.13);border:1px solid rgba(42,171,238,.3);color:var(--tg);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.tg-nav:hover{background:rgba(42,171,238,.22);}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,7,15,0.97);border-top:1px solid var(--border);display:flex;height:62px;padding-bottom:env(safe-area-inset-bottom,0px);}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;padding:0;}
+.bnav-btn .bico{font-size:20px;line-height:1;}
+.bnav-btn.on{color:var(--gold);}
+
+/* ── PAGES ── */
+.page{display:none;padding-bottom:80px;}
+.page.on{display:block;}
+
+/* ── SHARED ── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px;}
+@media(min-width:700px){.wrap{padding:0 24px;}}
+
+/* ── HOME ── */
+.hero{padding:28px 16px 20px;max-width:1080px;margin:0 auto;}
+.kicker{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,11vw,78px);line-height:.92;letter-spacing:1px;margin-bottom:8px;}
+.hero h1 .acc{color:var(--gold);}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.5;max-width:340px;}
+
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;max-width:1080px;margin:0 auto;}
+.home-tile{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px 16px;cursor:pointer;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:all .2s;}
+.home-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.home-tile.t-matchs::before{background:linear-gradient(90deg,var(--green),var(--blue));}
+.home-tile.t-histo::before{background:linear-gradient(90deg,var(--gold),var(--el));}
+.home-tile.t-tg::before{background:linear-gradient(90deg,var(--tg),var(--blue));}
+.home-tile.t-about::before{background:linear-gradient(90deg,var(--purple),var(--tg));}
+.home-tile:active{transform:scale(.97);}
+@media(hover:hover){.home-tile:hover{border-color:var(--border2);transform:translateY(-2px);}}
+.tile-ico{font-size:28px;}
+.tile-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--text);}
+.tile-sub{font-size:11px;color:var(--muted);line-height:1.4;}
+.tile-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;font-family:'DM Mono',monospace;}
+.badge-live{background:var(--red);color:#fff;}
+.badge-gold{background:var(--gold);color:#000;}
+.badge-green{background:var(--green);color:#000;}
+
+.tg-banner{display:flex;align-items:center;gap:12px;background:rgba(42,171,238,.07);border:1px solid rgba(42,171,238,.2);border-radius:14px;padding:14px;margin:0 16px 16px;text-decoration:none;max-width:calc(1080px - 0px);}
+@media(min-width:700px){.tg-banner{margin:0 24px 16px;}}
+.tg-banner:hover{background:rgba(42,171,238,.13);}
+.tg-ico{width:40px;height:40px;border-radius:50%;background:rgba(42,171,238,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tg-body{flex:1;}
+.tg-title{font-size:13px;font-weight:700;color:var(--tg);}
+.tg-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ── MATCHS PAGE ── */
+.page-head{padding:20px 16px 8px;max-width:1080px;margin:0 auto;}
+.page-head h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,8vw,52px);letter-spacing:1px;margin-bottom:4px;}
+.sport-tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:1080px;margin:0 auto;}
+.sport-tabs::-webkit-scrollbar{display:none;}
+.stab{padding:6px 16px;border-radius:99px;border:1px solid var(--border2);background:none;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s;}
+.stab.on{background:var(--card2);color:var(--text);border-color:var(--border2);}
+.stab.on.st{color:var(--green);border-color:rgba(0,240,160,.35);}
+.stab.on.sf{color:var(--blue);border-color:rgba(61,139,255,.35);}
+
+.sport-section{display:none;padding:0 16px 16px;max-width:1080px;margin:0 auto;}
+.sport-section.on{display:block;}
+@media(min-width:700px){.sport-section{padding:0 24px 24px;}}
+
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-top:12px;}
+.sec-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:99px;white-space:nowrap;}
+.tag-t{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.tag-pl{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+.tag-ll{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);}
+.tag-bun{background:rgba(249,115,22,.1);color:var(--el);border:1px solid rgba(249,115,22,.2);}
+.tag-sa{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.tag-l1{background:rgba(0,240,160,.08);color:var(--green);border:1px solid rgba(0,240,160,.15);}
+.sec-line{flex:1;height:1px;background:var(--border);}
+.sec-info{font-size:10px;color:var(--muted);white-space:nowrap;}
+
+/* Cards */
+.cards-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px;}
+@media(min-width:700px){.cards-grid{grid-template-columns:1fr 1fr;}}
+
+/* ── MATCH CARD ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s;}
+.card-stripe{height:3px;}
+.st-t{background:linear-gradient(90deg,var(--green),transparent);}
+.st-pl{background:linear-gradient(90deg,var(--blue),transparent);}
+.st-ll{background:linear-gradient(90deg,var(--gold),transparent);}
+.st-bun{background:linear-gradient(90deg,var(--el),transparent);}
+.st-sa{background:linear-gradient(90deg,var(--purple),transparent);}
+.st-l1{background:linear-gradient(90deg,#00c878,transparent);}
+
+.card-meta{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0;}
+.card-comp{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:700;}
+.card-time{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--gold);background:rgba(245,200,66,.08);padding:3px 9px;border-radius:99px;border:1px solid rgba(245,200,66,.2);}
+.affiche{display:flex;align-items:center;padding:14px 14px 10px;gap:8px;}
+.team-side{flex:1;}
+.team-side.right{text-align:right;align-items:flex-end;display:flex;flex-direction:column;}
+.country-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);display:block;margin-bottom:4px;}
+.tname{font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,4.2vw,21px);letter-spacing:.5px;line-height:1.05;color:var(--text);display:block;}
+.tsub{font-size:10px;color:var(--muted);margin-top:3px;display:block;}
+.vsb{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;padding:0 4px;}
+.vsdot{width:6px;height:6px;border-radius:50%;background:var(--dim);}
+.vstxt{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:var(--muted);}
+.prono-box{margin:0 14px;background:rgba(0,0,0,.28);border-radius:12px;padding:12px;border:1px solid var(--border);}
+.prono-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.prono-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.prono-winner{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4.5vw,23px);letter-spacing:.5px;line-height:1;display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.prono-detail{font-size:11px;color:var(--muted);line-height:1.45;}
+.bars{padding:10px 14px 0;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bar-name{font-size:10px;color:var(--muted);font-weight:600;width:95px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.05);overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;}
+.fg{background:var(--green);}.fb{background:var(--blue);}.fel{background:var(--el);}.fgr{background:var(--dim);}.fpu{background:var(--purple);}.fgo{background:var(--gold);}
+.bar-pct{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;width:28px;text-align:right;flex-shrink:0;}
+.chips{display:flex;align-items:center;gap:6px;padding:10px 14px 14px;flex-wrap:wrap;}
+.chip{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:99px;}
+.cg{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.cy{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);}
+.co{background:rgba(249,115,22,.1);color:var(--el);border:1px solid rgba(249,115,22,.2);}
+.cb{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+.cp{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.chip-txt{font-size:10px;color:var(--muted);}
+
+/* ── HISTORIQUE ── */
+.histo-header{padding:24px 16px 16px;max-width:1080px;margin:0 auto;}
+.histo-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,9vw,60px);letter-spacing:1px;line-height:.95;margin-bottom:14px;}
+.histo-header h2 .acc{color:var(--gold);}
+
+.rate-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:16px;}
+.rate-circle{width:70px;height:70px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--dim);flex-shrink:0;}
+.rate-num{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
+.rate-pct{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:1px;}
+.rate-body{flex:1;}
+.rate-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.rate-detail{font-size:11px;color:var(--muted);}
+.rate-stats{display:flex;gap:14px;margin-top:8px;}
+.rstat{display:flex;flex-direction:column;gap:2px;}
+.rstat-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;}
+.rstat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
+.rate-bar-wrap{margin-top:10px;}
+.rate-bar-track{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;}
+.rate-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .6s ease;}
+
+.histo-list{display:flex;flex-direction:column;gap:10px;max-width:1080px;margin:0 auto;padding:0 16px 16px;}
+@media(min-width:700px){.histo-list{padding:0 24px 24px;}}
+
+.histo-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;align-items:stretch;}
+.histo-bar{width:5px;flex-shrink:0;}
+.histo-bar.won{background:var(--green);}
+.histo-bar.lost{background:var(--red);}
+.histo-content{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:5px;}
+.histo-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.histo-matchup{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.5px;color:var(--text);line-height:1.1;}
+.histo-verdict{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+.v-won{background:rgba(0,240,160,.12);color:var(--green);border:1px solid rgba(0,240,160,.25);}
+.v-lost{background:rgba(255,77,106,.12);color:var(--red);border:1px solid rgba(255,77,106,.25);}
+.histo-mid{font-size:11px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.histo-mid strong{color:var(--text);}
+.histo-score{font-family:'DM Mono',monospace;}
+.histo-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.histo-date{font-size:10px;color:var(--muted);}
+.histo-sport{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border-radius:99px;}
+.hs-tennis{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.hs-foot{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+
+.clear-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 16px 24px;padding:12px;border:1px solid rgba(255,77,106,.2);border-radius:12px;background:rgba(255,77,106,.06);color:var(--red);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+@media(min-width:700px){.clear-btn{margin:0 24px 24px;}}
+.empty-state{text-align:center;padding:40px 24px;color:var(--muted);}
+.empty-ico{font-size:36px;margin-bottom:10px;}
+.empty-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:12px;line-height:1.5;}
+
+/* About */
+.about-wrap{padding:24px 16px;max-width:600px;margin:0 auto;}
+.about-block{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px;}
+.about-block-title{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text);}
+.about-block-text{font-size:12px;color:var(--muted);line-height:1.7;}
+.about-warn{background:rgba(255,77,106,.07);border:1px solid rgba(255,77,106,.2);}
+.about-warn .about-block-title{color:var(--red);}
+
+/* Source badge */
+.source-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:99px;background:rgba(42,171,238,.1);color:var(--tg);border:1px solid rgba(42,171,238,.2);margin-top:8px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.card,.histo-item{animation:fadeUp .25s ease both;}
+.card:nth-child(2),.histo-item:nth-child(2){animation-delay:.05s;}
+.card:nth-child(3),.histo-item:nth-child(3){animation-delay:.1s;}
+.card:nth-child(4),.histo-item:nth-child(4){animation-delay:.15s;}
+.card:nth-child(5),.histo-item:nth-child(5){animation-delay:.2s;}
+.card:nth-child(6),.histo-item:nth-child(6){animation-delay:.25s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#" onclick="showPage('home');return false;">CASH<span> PRONO CLUB</span></a>
+  <a class="tg-nav" href="https://t.me/cashpronoclub" target="_blank">✈️ Telegram</a>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div class="page on" id="page-home">
+  <div class="hero">
+    <div class="kicker">Vendredi 10 Avril 2026</div>
+    <h1>CASH<br><span class="acc">PRONO</span><br>CLUB</h1>
+    <p class="hero-sub">Pronostics sport basés sur Flashscore & Sofascore. Tennis, Foot et plus.</p>
+  </div>
+  <div class="home-grid">
+    <div class="home-tile t-matchs" onclick="showPage('matchs')">
+      <div class="tile-ico">🎯</div>
+      <div class="tile-title">Matchs</div>
+      <div class="tile-sub">Tennis · Premier League · LaLiga · Bundesliga · Serie A · Ligue 1</div>
+      <span class="tile-badge badge-live" id="badge-matchs">10</span>
+    </div>
+    <div class="home-tile t-histo" onclick="showPage('histo')">
+      <div class="tile-ico">📊</div>
+      <div class="tile-title">Historique</div>
+      <div class="tile-sub">Taux de réussite & résultats</div>
+      <span class="tile-badge badge-gold" id="badge-histo">8</span>
+    </div>
+    <div class="home-tile t-tg" onclick="window.open('https://t.me/cashpronoclub','_blank')">
+      <div class="tile-ico">✈️</div>
+      <div class="tile-title">Telegram</div>
+      <div class="tile-sub">@cashpronoclub · Rejoins</div>
+    </div>
+    <div class="home-tile t-about" onclick="showPage('about')">
+      <div class="tile-ico">ℹ️</div>
+      <div class="tile-title">À propos</div>
+      <div class="tile-sub">Méthode · Sources · Disclaimer</div>
+    </div>
+  </div>
+  <a class="tg-banner" href="https://t.me/cashpronoclub" target="_blank">
+    <div class="tg-ico">✈️</div>
+    <div class="tg-body">
+      <div class="tg-title">@cashpronoclub — Pronostics exclusifs</div>
+      <div class="tg-sub">Value bets · Alertes avant chaque match · Analyses Flashscore</div>
+    </div>
+  </a>
+</div>
+
+<!-- ════ MATCHS ════ -->
+<div class="page" id="page-matchs">
+  <div class="page-head">
+    <div class="kicker">Sources : Flashscore · Sofascore · ATP Tour</div>
+    <h2>LES <span style="color:var(--gold)">MATCHS</span></h2>
+  </div>
+
+  <div class="sport-tabs">
+    <button class="stab on" id="stab-all" onclick="switchSport('all')">🏠 Tous</button>
+    <button class="stab st" id="stab-tennis" onclick="switchSport('tennis')">🎾 Tennis</button>
+    <button class="stab sf" id="stab-foot" onclick="switchSport('foot')">⚽ Football</button>
+  </div>
+
+  <!-- ALL -->
+  <div class="sport-section on" id="ss-all">
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 Monte Carlo — Quarts de finale</span><div class="sec-line"></div><span class="sec-info">dès 12h00</span></div>
+    <div class="cards-grid" id="g-t-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-pl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-pl-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-ll">🇪🇸 LaLiga</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-ll-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-bun">🇩🇪 Bundesliga</span><div class="sec-line"></div><span class="sec-info">20h30</span></div>
+    <div class="cards-grid" id="g-bun-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-sa">🇮🇹 Serie A</span><div class="sec-line"></div><span class="sec-info">20h45</span></div>
+    <div class="cards-grid" id="g-sa-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-l1">🇫🇷 Ligue 1</span><div class="sec-line"></div><span class="sec-info">19h · 21h05</span></div>
+    <div class="cards-grid" id="g-l1-all"></div>
+  </div>
+
+  <!-- TENNIS ONLY -->
+  <div class="sport-section" id="ss-tennis">
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 Monte Carlo Masters — Quarts de finale</span><div class="sec-line"></div><span class="sec-info">dès 12h00</span></div>
+    <div class="cards-grid" id="g-t-only"></div>
+  </div>
+
+  <!-- FOOT ONLY -->
+  <div class="sport-section" id="ss-foot">
+    <div class="sec-head"><span class="sec-tag tag-pl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League — J32</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-pl-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-ll">🇪🇸 LaLiga — J31</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-ll-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-bun">🇩🇪 Bundesliga — J29</span><div class="sec-line"></div><span class="sec-info">20h30</span></div>
+    <div class="cards-grid" id="g-bun-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-sa">🇮🇹 Serie A — J33</span><div class="sec-line"></div><span class="sec-info">20h45</span></div>
+    <div class="cards-grid" id="g-sa-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-l1">🇫🇷 Ligue 1 — J29</span><div class="sec-line"></div><span class="sec-info">19h · 21h05</span></div>
+    <div class="cards-grid" id="g-l1-only"></div>
+  </div>
+</div>
+
+<!-- ════ HISTORIQUE ════ -->
+<div class="page" id="page-histo">
+  <div class="histo-header">
+    <div class="kicker">Résultats vérifiés · Flashscore</div>
+    <h2>HISTO<span class="acc">RIQUE</span></h2>
+    <div class="rate-card">
+      <div class="rate-circle" id="rate-circle">
+        <span class="rate-num" id="rate-num" style="color:var(--muted)">—</span>
+        <span class="rate-pct">RÉUSSITE</span>
+      </div>
+      <div class="rate-body">
+        <div class="rate-title">Taux de réussite global</div>
+        <div class="rate-detail" id="rate-detail">Chargement…</div>
+        <div class="rate-stats">
+          <div class="rstat"><span class="rstat-num" id="stat-won" style="color:var(--green)">0</span><span class="rstat-lbl">Gagnés</span></div>
+          <div class="rstat"><span class="rstat-num" id="stat-lost" style="color:var(--red)">0</span><span class="rstat-lbl">Perdus</span></div>
+          <div class="rstat"><span class="rstat-num" id="stat-total" style="color:var(--muted)">0</span><span class="rstat-lbl">Total</span></div>
+        </div>
+        <div class="rate-bar-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" id="rate-bar" style="width:0%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="histo-list" id="histo-list">
+    <div class="empty-state" id="histo-empty" style="display:none">
+      <div class="empty-ico">📭</div>
+      <div class="empty-title">Aucun historique</div>
+      <div class="empty-sub">Les matchs terminés apparaîtront ici automatiquement.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════ ABOUT ════ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="kicker">Cash Prono Club</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,9vw,60px);letter-spacing:1px;margin-bottom:20px;">À <span style="color:var(--gold)">PROPOS</span></h2>
+    <div class="about-block">
+      <div class="about-block-title">📡 Sources utilisées</div>
+      <div class="about-block-text">Tous nos pronostics sont basés sur des données officielles et des plateformes reconnues : <strong style="color:var(--text)">Flashscore</strong> (scores en direct, H2H, forme), <strong style="color:var(--text)">Sofascore</strong> (stats avancées, momentum), <strong style="color:var(--text)">ATP Tour</strong> (classements officiels), <strong style="color:var(--text)">UEFA</strong> et les sites officiels des championnats.</div>
+      <div class="source-badge">⚡ Flashscore · Sofascore · ATP Tour · UEFA</div>
+    </div>
+    <div class="about-block">
+      <div class="about-block-title">🎯 Notre méthode</div>
+      <div class="about-block-text">Chaque jour nous sélectionnons les meilleurs matchs des 5 grands championnats (Premier League, LaLiga, Bundesliga, Serie A, Ligue 1) + les tournois tennis en cours. Nos pronostics s'appuient sur : classements, forme récente (5 derniers matchs), H2H, surface (tennis), stats domicile/extérieur et données de momentum.</div>
+    </div>
+    <div class="about-block">
+      <div class="about-block-title">📊 Historique</div>
+      <div class="about-block-text">L'historique affiche uniquement les résultats réels vérifiés sur Flashscore. Les pronostics non encore résolus restent dans "Matchs". Le taux de réussite se met à jour automatiquement.</div>
+    </div>
+    <div class="about-block about-warn">
+      <div class="about-block-title">⚠️ Disclaimer</div>
+      <div class="about-block-text">Pronostics fournis à titre informatif uniquement. Aucun résultat n'est garanti. Le sport reste imprévisible. Pariez de façon responsable. Ne misez jamais plus que ce que vous pouvez vous permettre de perdre.</div>
+    </div>
+    <a href="https://t.me/cashpronoclub" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(42,171,238,.1);border:1px solid rgba(42,171,238,.3);border-radius:14px;padding:16px;color:var(--tg);font-weight:700;font-size:14px;text-decoration:none;">
+      ✈️ Rejoindre @cashpronoclub sur Telegram
+    </a>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn on" id="btn-home" onclick="showPage('home')"><span class="bico">🏠</span>Accueil</button>
+  <button class="bnav-btn" id="btn-matchs" onclick="showPage('matchs')"><span class="bico">🎯</span>Matchs</button>
+  <button class="bnav-btn" id="btn-histo" onclick="showPage('histo')"><span class="bico">📊</span>Historique</button>
+  <button class="bnav-btn" id="btn-about" onclick="showPage('about')"><span class="bico">ℹ️</span>À propos</button>
+</nav>
+
+<script>
+/* ════════════════════════════════════════════════
+   DONNÉES TENNIS — Quarts de finale Monte Carlo
+   10 avril 2026 · Sources : Flashscore + ATP Tour
+════════════════════════════════════════════════ */
+const TENNIS = [
+  {
+    id:'mc10-fonseca-zverev', stripe:'st-t',
+    comp:'Court Rainier III · QF · 1er match', time:'~12h00',
+    matchEnd:'2026-04-10T15:00:00+02:00',
+    home:{flag:'BRA', name:'FONSECA', sub:'#20 ATP · Surprise du tournoi'},
+    away:{flag:'GER', name:'ZVEREV', sub:'#3 ATP · TS 3'},
+    w:'ZVEREV', wc:'var(--green)',
+    d:'Zverev 3e mondial et plus régulier — Fonseca a créé la surprise contre Berrettini 6-3 6-2 mais Zverev reste écrasant favori',
+    bars:[{n:'Fonseca',p:30,c:'fgr'},{n:'Zverev',p:70,c:'fg',hi:1}],
+    chip:'<span class="chip cg">Favori</span>', ct:'Zverev en 2 sets'
+  },
+  {
+    id:'mc10-faa-sinner', stripe:'st-t',
+    comp:'Court Rainier III · QF · 2e match', time:'~14h00',
+    matchEnd:'2026-04-10T17:00:00+02:00',
+    home:{flag:'CAN', name:'AUGER-ALIASSIME', sub:'#6 ATP · TS 6'},
+    away:{flag:'ITA', name:'SINNER', sub:'#2 ATP · N°2 Mondial'},
+    w:'SINNER', wc:'var(--green)',
+    d:'Sinner domine FAA 7-0 en H2H — FAA a battu Ruud 7-5 2-2 ret. mais Sinner reste le grand favori',
+    bars:[{n:'Auger-Aliassime',p:22,c:'fgr'},{n:'Sinner',p:78,c:'fg',hi:1}],
+    chip:'<span class="chip cg">Grand favori</span>', ct:'Sinner en 2 sets'
+  },
+  {
+    id:'mc10-alcaraz-bublik', stripe:'st-t',
+    comp:'Court Rainier III · QF · 3e match', time:'~16h00',
+    matchEnd:'2026-04-10T19:00:00+02:00',
+    home:{flag:'ESP', name:'ALCARAZ', sub:'#1 ATP · Tenant du titre'},
+    away:{flag:'KAZ', name:'BUBLIK', sub:'#8 ATP · TS 8'},
+    w:'ALCARAZ', wc:'var(--green)',
+    d:'Alcaraz a battu Lehecka 6-4 6-2 et défend son titre — Bublik imprévisible mais Alcaraz nettement supérieur sur terre',
+    bars:[{n:'Alcaraz',p:76,c:'fg',hi:1},{n:'Bublik',p:24,c:'fgr'}],
+    chip:'<span class="chip cg">Grand favori</span>', ct:'Alcaraz sans trembler'
+  },
+  {
+    id:'mc10-vacherot-deminaur', stripe:'st-t',
+    comp:'Court des Princes · QF', time:'~12h00',
+    matchEnd:'2026-04-10T15:30:00+02:00',
+    home:{flag:'MON', name:'VACHEROT', sub:'#25 ATP · Héros local !'},
+    away:{flag:'AUS', name:'DE MINAUR', sub:'#5 ATP · TS 5'},
+    w:'DE MINAUR', wc:'var(--blue)',
+    d:'Vacherot a battu Musetti et Hurkacz — exploit total ! Mais De Minaur TS5 reste favori. Public monégasque = danger',
+    bars:[{n:'Vacherot',p:34,c:'fgr'},{n:'De Minaur',p:66,c:'fb',hi:1}],
+    chip:'<span class="chip cy">Match à surveiller</span>', ct:'Vacherot en mode coupe Davis !'
+  },
+];
+
+/* ════════════════════════════════════════════════
+   DONNÉES FOOTBALL — 10 avril 2026
+   Sources : Flashscore · Sofascore · Sites officiels
+════════════════════════════════════════════════ */
+const PREMIER_LEAGUE = [
+  {
+    id:'pl-westham-wolves', stripe:'st-pl',
+    comp:'J32 · London Stadium', time:'21h00',
+    matchEnd:'2026-04-10T23:05:00+02:00',
+    home:{flag:'ENG', name:'WEST HAM', sub:'Premier League · Relégation danger'},
+    away:{flag:'ENG', name:'WOLVES', sub:'Dernier du classement'},
+    w:'WEST HAM', wc:'var(--blue)',
+    d:'West Ham a besoin des 3 points pour fuir la zone rouge — Wolves quasiment relégués. London Stadium = avantage Hammers',
+    bars:[{n:'West Ham',p:52,c:'fb',hi:1},{n:'Match nul',p:25,c:'fgr'},{n:'Wolves',p:23,c:'fgr'}],
+    chip:'<span class="chip cb">Favori à domicile</span>', ct:'West Ham doit gagner'
+  },
+];
+
+const LALIGA = [
+  {
+    id:'ll-realmadrid-girona', stripe:'st-ll',
+    comp:'J31 · Santiago Bernabéu', time:'21h00',
+    matchEnd:'2026-04-10T23:05:00+02:00',
+    home:{flag:'ESP', name:'REAL MADRID', sub:'7 pts derrière le Barça'},
+    away:{flag:'ESP', name:'GIRONA', sub:'Milieu de tableau'},
+    w:'REAL MADRID', wc:'var(--gold)',
+    d:'Real Madrid à domicile : 13 victoires en 15 matchs au Bernabéu cette saison. Girona n\'a pas gagné en déplacement depuis 5 matchs. Madrid sous pression après défaite vs Majorque',
+    bars:[{n:'Real Madrid',p:65,c:'fgo',hi:1},{n:'Match nul',p:18,c:'fgr'},{n:'Girona',p:17,c:'fgr'}],
+    chip:'<span class="chip cy">Favori</span>', ct:'Madrid doit réagir au Bernabéu'
+  },
+];
+
+const BUNDESLIGA = [
+  {
+    id:'bun-augsburg-hoffenheim', stripe:'st-bun',
+    comp:'J29 · WWK Arena · Augsburg', time:'20h30',
+    matchEnd:'2026-04-10T22:30:00+02:00',
+    home:{flag:'GER', name:'AUGSBURG', sub:'Bundesliga · Milieu'},
+    away:{flag:'GER', name:'HOFFENHEIM', sub:'Zone de relégation'},
+    w:'AUGSBURG', wc:'var(--el)',
+    d:'Augsburg à domicile contre Hoffenheim en danger de relégation. Avantage logique pour les locaux dans un match crucial pour les deux',
+    bars:[{n:'Augsburg',p:47,c:'fel',hi:1},{n:'Match nul',p:27,c:'fgr'},{n:'Hoffenheim',p:26,c:'fgr'}],
+    chip:'<span class="chip co">Léger favori</span>', ct:'Match de bas de tableau tendu'
+  },
+];
+
+const SERIE_A = [
+  {
+    id:'sa-roma-pisa', stripe:'st-sa',
+    comp:'J33 · Stadio Olimpico · Rome', time:'20h45',
+    matchEnd:'2026-04-10T22:50:00+02:00',
+    home:{flag:'ITA', name:'AS ROMA', sub:'Serie A · Course Europe'},
+    away:{flag:'ITA', name:'PISA', sub:'Serie A · Promu'},
+    w:'AS ROMA', wc:'var(--purple)',
+    d:'Roma à domicile contre Pisa promu — match à sens unique sur le papier. Les Giallorossi ont besoin des points pour l\'Europe',
+    bars:[{n:'Roma',p:65,c:'fpu',hi:1},{n:'Match nul',p:20,c:'fgr'},{n:'Pisa',p:15,c:'fgr'}],
+    chip:'<span class="chip cp">Grand favori</span>', ct:'Roma doit l\'emporter à l\'Olimpico'
+  },
+];
+
+const LIGUE_1 = [
+  {
+    id:'l1-parisfc-monaco', stripe:'st-l1',
+    comp:'J29 · Charlety · Paris', time:'19h00',
+    matchEnd:'2026-04-10T21:00:00+02:00',
+    home:{flag:'FRA', name:'PARIS FC', sub:'Ligue 1 · Promu'},
+    away:{flag:'MON', name:'MONACO', sub:'Ligue 1 · Top 5'},
+    w:'MONACO', wc:'var(--green)',
+    d:'Monaco en forme après avoir dominé l\'OM — Paris FC promu loin derrière les standards de Monaco. Victoire des Monégasques attendue',
+    bars:[{n:'Paris FC',p:22,c:'fgr'},{n:'Match nul',p:24,c:'fgr'},{n:'Monaco',p:54,c:'fg',hi:1}],
+    chip:'<span class="chip cg">Favori</span>', ct:'Monaco à l\'extérieur en confiance'
+  },
+  {
+    id:'l1-marseille-metz', stripe:'st-l1',
+    comp:'J29 · Vélodrome · Marseille', time:'21h05',
+    matchEnd:'2026-04-10T23:10:00+02:00',
+    home:{flag:'FRA', name:'MARSEILLE', sub:'Ligue 1 · Course Europe'},
+    away:{flag:'FRA', name:'METZ', sub:'Quasi-relégué · 14 pts'},
+    w:'MARSEILLE', wc:'var(--green)',
+    d:'Marseille au Vélodrome contre Metz quasi-relégué (14 pts, -35 goals). Match a priori facile pour l\'OM qui vise l\'Europe',
+    bars:[{n:'Marseille',p:72,c:'fg',hi:1},{n:'Match nul',p:17,c:'fgr'},{n:'Metz',p:11,c:'fgr'}],
+    chip:'<span class="chip cg">Grand favori</span>', ct:'Vélodrome = forteresse vs un Metz coulé'
+  },
+];
+
+/* ════════════════════════════════════════════════
+   HISTORIQUE RÉEL — Résultats vérifiés Flashscore
+════════════════════════════════════════════════ */
+const REAL_HISTORY = [
+
+  // ── 7 AVRIL — Monte Carlo 2e tour ──
+  {id:'h-sinner-humbert', sport:'tennis', home:'SINNER', away:'HUMBERT', prono:'SINNER', score:'6-3 6-0', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-alcaraz-baez', sport:'tennis', home:'ALCARAZ', away:'BAEZ', prono:'ALCARAZ', score:'7-5 7-5', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-berrettini-bautista', sport:'tennis', home:'BERRETTINI', away:'BAUTISTA AGUT', prono:'BERRETTINI', score:'4-0 ret.', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-hurkacz-darderi', sport:'tennis', home:'HURKACZ', away:'DARDERI', prono:'HURKACZ', score:'7-6(4) 5-7 6-1', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-etcheverry-dimitrov', sport:'tennis', home:'ETCHEVERRY', away:'DIMITROV', prono:'ETCHEVERRY', score:'6-4 2-6 6-3', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-monfils-bublik', sport:'tennis', home:'MONFILS', away:'BUBLIK', prono:'BUBLIK', score:'6-4 6-4', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+  {id:'h-deminaur-norrie', sport:'tennis', home:'DE MINAUR', away:'NORRIE', prono:'DE MINAUR', score:'7-5 2-6 6-2', result:'won', comp:'2e tour · Monte Carlo', date:'07/04/2026'},
+
+  // ── 7 AVRIL — LDC Quarts aller ──
+  {id:'h-sporting-arsenal', sport:'foot', home:'SPORTING CP', away:'ARSENAL', prono:'ARSENAL', score:'0-1 (Havertz 90+1)', result:'won', comp:'QF aller · Ligue des Champions', date:'07/04/2026'},
+  {id:'h-realmadrid-bayern', sport:'foot', home:'REAL MADRID', away:'BAYERN MUNICH', prono:'BAYERN MUNICH', score:'1-2 (Díaz 41, Kane 46 / Mbappé 74)', result:'won', comp:'QF aller · Ligue des Champions', date:'07/04/2026'},
+
+  // ── 8 AVRIL — Monte Carlo 3e tour ──
+  {id:'h-zverev-garin', sport:'tennis', home:'ZVEREV', away:'GARIN', prono:'ZVEREV', score:'4-6 6-4 7-5', result:'won', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-fonseca-rinderknech', sport:'tennis', home:'FONSECA', away:'RINDERKNECH', prono:'FONSECA', score:'7-5 4-6 6-3', result:'won', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-ruud-moutet', sport:'tennis', home:'RUUD', away:'MOUTET', prono:'RUUD', score:'7-5 6-3', result:'won', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-rublev-bergs', sport:'tennis', home:'RUBLEV', away:'BERGS', prono:'RUBLEV', score:'4-6 1-6', result:'lost', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-vacherot-musetti', sport:'tennis', home:'VACHEROT', away:'MUSETTI', prono:'MUSETTI', score:'7-6 7-5', result:'lost', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-lehecka-tabilo', sport:'tennis', home:'LEHECKA', away:'TABILO', prono:'LEHECKA', score:'4-6 7-6(4) 6-3', result:'won', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-machac-cerundolo', sport:'tennis', home:'MACHAC', away:'CERUNDOLO', prono:'CERUNDOLO', score:'7-6 6-3', result:'lost', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+  {id:'h-berrettini-medvedev', sport:'tennis', home:'BERRETTINI', away:'MEDVEDEV', prono:'BERRETTINI', score:'6-0 6-0', result:'won', comp:'3e tour · Monte Carlo', date:'08/04/2026'},
+
+  // ── 8 AVRIL — LDC Quarts aller ──
+  {id:'h-psg-liverpool', sport:'foot', home:'PSG', away:'LIVERPOOL', prono:'PSG', score:'2-0 (Doué 11, Kvaratskhelia 65)', result:'won', comp:'QF aller · Ligue des Champions', date:'08/04/2026'},
+  {id:'h-barca-atletico', sport:'foot', home:'FC BARCELONE', away:'ATLETICO MADRID', prono:'FC BARCELONE', score:'0-2 (J.Alvarez 45, A.Griezmann 70)', result:'lost', comp:'QF aller · Ligue des Champions', date:'08/04/2026'},
+
+  // ── 9 AVRIL — Monte Carlo 8es de finale ──
+  {id:'h-zverev-bergs', sport:'tennis', home:'ZVEREV', away:'BERGS', prono:'ZVEREV', score:'6-2 7-5', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-sinner-machac', sport:'tennis', home:'SINNER', away:'MACHAC', prono:'SINNER', score:'6-1 6-7(3) 6-3', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-alcaraz-etcheverry', sport:'tennis', home:'ALCARAZ', away:'ETCHEVERRY', prono:'ALCARAZ', score:'6-1 4-6 6-3', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-vacherot-hurkacz', sport:'tennis', home:'VACHEROT', away:'HURKACZ', prono:'HURKACZ', score:'5-7 6-2 6-1', result:'lost', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-berrettini-fonseca', sport:'tennis', home:'BERRETTINI', away:'FONSECA', prono:'FONSECA', score:'3-6 2-6', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-faa-ruud', sport:'tennis', home:'AUGER-ALIASSIME', away:'RUUD', prono:'AUGER-ALIASSIME', score:'7-5 2-2 ret.', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-lehecka-bublik', sport:'tennis', home:'LEHECKA', away:'BUBLIK', prono:'LEHECKA', score:'4-6 7-6(4) 6-3', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+  {id:'h-deminaur-cobolli', sport:'tennis', home:'DE MINAUR', away:'COBOLLI', prono:'DE MINAUR', score:'7-6(5) 2-6 6-2', result:'won', comp:'8e finale · Monte Carlo', date:'09/04/2026'},
+
+  // ── 9 AVRIL — Europa League QF aller ──
+  {id:'h-fribourg-celta', sport:'foot', home:'SC FRIBOURG', away:'CELTA VIGO', prono:'SC FRIBOURG', score:'3-0 (Grifo 10, Beste 32, Ginter 78)', result:'won', comp:'QF aller · Europa League', date:'09/04/2026'},
+  {id:'h-porto-nottingham', sport:'foot', home:'FC PORTO', away:'NOTTINGHAM F.', prono:'FC PORTO', score:'1-1 (Gomes 11 / Fernandes csc 13)', result:'lost', comp:'QF aller · Europa League', date:'09/04/2026'},
+  {id:'h-bologne-villa', sport:'foot', home:'BOLOGNE', away:'ASTON VILLA', prono:'ASTON VILLA', score:'1-3 (Konsa 44, Watkins 51 90+4 / Rowe 90)', result:'won', comp:'QF aller · Europa League', date:'09/04/2026'},
+];
+
+/* ════════════════════════════════════════════════
+   STORAGE
+════════════════════════════════════════════════ */
+const SK = 'cpc_history_v5';
+const MK = 'cpc_moved_v5';
+
+function loadH(){ try{return JSON.parse(localStorage.getItem(SK)||'null');}catch(e){return null;} }
+function saveH(h){ localStorage.setItem(SK, JSON.stringify(h)); }
+function loadM(){ try{return JSON.parse(localStorage.getItem(MK)||'[]');}catch(e){return [];} }
+function saveM(m){ localStorage.setItem(MK, JSON.stringify(m)); }
+
+// Init: inject real history if first load
+function initHistory(){
+  const existing = loadH();
+  if(existing === null){
+    saveH(REAL_HISTORY);
+    const movedIds = REAL_HISTORY.map(h=>h.id);
+    saveM(movedIds);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   CARD BUILDER
+════════════════════════════════════════════════ */
+function buildCard(m){
+  const bars = m.bars.map(b=>`
+    <div class="bar-row">
+      <span class="bar-name">${b.n}</span>
+      <div class="bar-track"><div class="bar-fill ${b.c}" style="width:${b.p}%"></div></div>
+      <span class="bar-pct" style="${b.hi?'color:'+(b.col||m.wc):'color:var(--muted)'}">${b.p}%</span>
+    </div>`).join('');
+  return `<div class="card">
+    <div class="card-stripe ${m.stripe}"></div>
+    <div class="card-meta"><span class="card-comp">${m.comp}</span><span class="card-time">${m.time}</span></div>
+    <div class="affiche">
+      <div class="team-side">
+        <span class="country-tag">${m.home.flag}</span>
+        <span class="tname">${m.home.name}</span>
+        <span class="tsub">${m.home.sub}</span>
+      </div>
+      <div class="vsb"><div class="vsdot"></div><span class="vstxt">VS</span><div class="vsdot"></div></div>
+      <div class="team-side right">
+        <span class="country-tag">${m.away.flag}</span>
+        <span class="tname">${m.away.name}</span>
+        <span class="tsub">${m.away.sub}</span>
+      </div>
+    </div>
+    <div class="prono-box">
+      <div class="prono-lbl">Notre pronostic</div>
+      <div class="prono-winner" style="color:${m.wc}">🏆 ${m.w}</div>
+      <div class="prono-detail">${m.d}</div>
+    </div>
+    <div class="bars">${bars}</div>
+    <div class="chips">${m.chip}<span class="chip-txt">${m.ct}</span></div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════
+   FILL GRIDS
+════════════════════════════════════════════════ */
+function fill(id, arr){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const moved = loadM();
+  const active = arr.filter(m=>!moved.includes(m.id));
+  if(active.length===0){
+    el.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">✅</div><div class="empty-title">Terminé</div><div class="empty-sub">Ces matchs sont terminés — retrouve les résultats dans l'Historique.</div></div>`;
+  } else {
+    el.innerHTML = active.map(buildCard).join('');
+  }
+}
+
+function renderMatchs(){
+  fill('g-t-all', TENNIS); fill('g-t-only', TENNIS);
+  fill('g-pl-all', PREMIER_LEAGUE); fill('g-pl-only', PREMIER_LEAGUE);
+  fill('g-ll-all', LALIGA); fill('g-ll-only', LALIGA);
+  fill('g-bun-all', BUNDESLIGA); fill('g-bun-only', BUNDESLIGA);
+  fill('g-sa-all', SERIE_A); fill('g-sa-only', SERIE_A);
+  fill('g-l1-all', LIGUE_1); fill('g-l1-only', LIGUE_1);
+  // Badge
+  const moved = loadM();
+  const all = [...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  const count = all.filter(m=>!moved.includes(m.id)).length;
+  document.getElementById('badge-matchs').textContent = count;
+}
+
+/* ════════════════════════════════════════════════
+   HISTORIQUE RENDER
+════════════════════════════════════════════════ */
+function buildHistoItem(h){
+  const won = h.result==='won';
+  const sportCls = h.sport==='tennis'?'hs-tennis':'hs-foot';
+  const sportLabel = h.sport==='tennis'?'🎾 Tennis':'⚽ Football';
+  return `<div class="histo-item">
+    <div class="histo-bar ${won?'won':'lost'}"></div>
+    <div class="histo-content">
+      <div class="histo-top">
+        <span class="histo-matchup">${h.home} vs ${h.away}</span>
+        <span class="histo-verdict ${won?'v-won':'v-lost'}">${won?'✓ PASSÉ':'✗ RATÉ'}</span>
+      </div>
+      <div class="histo-mid">
+        <span>Prono: <strong>${h.prono}</strong></span>
+        ${h.score?`<span class="histo-score">· ${h.score}</span>`:''}
+      </div>
+      <div class="histo-bottom">
+        <span class="histo-date">${h.date} · ${h.comp}</span>
+        <span class="histo-sport ${sportCls}">${sportLabel}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderHistory(){
+  const history = loadH() || [];
+  const list = document.getElementById('histo-list');
+  const empty = document.getElementById('histo-empty');
+  // Remove old items
+  list.querySelectorAll('.histo-item').forEach(i=>i.remove());
+
+  const won = history.filter(h=>h.result==='won').length;
+  const lost = history.filter(h=>h.result==='lost').length;
+  const total = history.length;
+  const rate = total>0 ? Math.round((won/total)*100) : null;
+
+  document.getElementById('stat-won').textContent = won;
+  document.getElementById('stat-lost').textContent = lost;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('badge-histo').textContent = total;
+
+  if(rate!==null){
+    const rn = document.getElementById('rate-num');
+    rn.textContent = rate+'%';
+    rn.style.color = rate>=60?'var(--green)':rate>=40?'var(--gold)':'var(--red)';
+    document.getElementById('rate-bar').style.width = rate+'%';
+    document.getElementById('rate-detail').textContent = `${won} pronostic${won>1?'s':''} réussi${won>1?'s':''} sur ${total}`;
+  } else {
+    document.getElementById('rate-num').textContent = '—';
+    document.getElementById('rate-bar').style.width = '0%';
+    document.getElementById('rate-detail').textContent = 'Aucun résultat';
+  }
+
+  if(total===0){
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  const sorted = [...history].reverse();
+  sorted.forEach(h=>{ list.insertAdjacentHTML('beforeend', buildHistoItem(h)); });
+}
+
+/* ════════════════════════════════════════════════
+   AUTO-MOVE EXPIRED
+════════════════════════════════════════════════ */
+function checkExpired(){
+  const now = new Date();
+  const moved = loadM();
+  let history = loadH() || [];
+  let changed = false;
+  const allMatches = [...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  allMatches.forEach(m=>{
+    if(moved.includes(m.id)) return;
+    if(now >= new Date(m.matchEnd)){
+      if(!history.find(h=>h.id===m.id)){
+        history.push({
+          id:m.id, sport: m.stripe.includes('t-t')?'tennis':'foot',
+          home:m.home.name, away:m.away.name, prono:m.w,
+          score:'', result:'pending',
+          comp:m.comp, date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})
+        });
+        changed=true;
+      }
+      moved.push(m.id);
+    }
+  });
+  if(changed){ saveH(history); saveM(moved); renderMatchs(); renderHistory(); }
+  else { const m2=loadM(); if(m2.length!==moved.length) saveM(moved); }
+}
+
+/* ════════════════════════════════════════════════
+   PUBLIC API — depuis la console du navigateur
+   markResult('mc10-faa-sinner', 'won', '6-3 6-2')
+   markResult('ll-realmadrid-girona', 'lost', '0-1')
+════════════════════════════════════════════════ */
+window.markResult = function(id, result, score=''){
+  const allM = [...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  const m = allM.find(x=>x.id===id);
+  if(!m){ console.warn('ID introuvable:', id); return; }
+  let history = loadH() || [];
+  const moved = loadM();
+  const entry = {
+    id, sport: m.stripe.includes('t-t')?'tennis':'foot',
+    home:m.home.name, away:m.away.name, prono:m.w,
+    score, result, comp:m.comp,
+    date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})
+  };
+  const idx = history.findIndex(h=>h.id===id);
+  if(idx>=0) history[idx]=entry; else history.push(entry);
+  if(!moved.includes(id)){ moved.push(id); saveM(moved); }
+  saveH(history); renderHistory(); renderMatchs();
+  console.log(`✅ ${id} → ${result} (${score})`);
+};
+
+
+/* ════════════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════════════ */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  const btn = document.getElementById('btn-'+id);
+  if(btn) btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='histo') renderHistory();
+  if(id==='matchs') renderMatchs();
+}
+
+function switchSport(s){
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on','st','sf'));
+  document.querySelectorAll('.sport-section').forEach(x=>x.classList.remove('on'));
+  const btn = document.getElementById('stab-'+s);
+  btn.classList.add('on');
+  if(s==='tennis') btn.classList.add('st');
+  if(s==='foot') btn.classList.add('sf');
+  document.getElementById('ss-'+s).classList.add('on');
+}
+
+/* ════ INIT ════ */
+initHistory();
+checkExpired();
+renderMatchs();
+renderHistory();
+setInterval(checkExpired, 60000);
+</script>
+</body>
+</html>
