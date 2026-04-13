@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CASH PRONO CLUB</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--surface:#0f0f1b;--card:#121220;--card2:#16162a;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --text:#eeeef5;--muted:#6a6a82;--dim:#252535;
+  --green:#00f0a0;--blue:#3d8bff;--gold:#f5c842;
+  --el:#f97316;--tg:#2AABEE;--red:#ff4d6a;--purple:#a78bfa;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+nav{position:sticky;top:0;z-index:200;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(7,7,15,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;gap:10px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2.5px;color:var(--text);text-decoration:none;flex-shrink:0;}
+.logo span{color:var(--gold);}
+.tg-nav{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:rgba(42,171,238,.13);border:1px solid rgba(42,171,238,.3);color:var(--tg);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,7,15,0.97);border-top:1px solid var(--border);display:flex;height:62px;padding-bottom:env(safe-area-inset-bottom,0px);}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;padding:0;}
+.bnav-btn .bico{font-size:20px;line-height:1;}
+.bnav-btn.on{color:var(--gold);}
+.page{display:none;padding-bottom:80px;}
+.page.on{display:block;}
+.hero{padding:28px 16px 20px;max-width:1080px;margin:0 auto;}
+.kicker{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,11vw,78px);line-height:.92;letter-spacing:1px;margin-bottom:8px;}
+.hero h1 .acc{color:var(--gold);}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.5;max-width:340px;}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;max-width:1080px;margin:0 auto;}
+.home-tile{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px 16px;cursor:pointer;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:all .2s;}
+.home-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.home-tile.t-matchs::before{background:linear-gradient(90deg,var(--green),var(--blue));}
+.home-tile.t-histo::before{background:linear-gradient(90deg,var(--gold),var(--el));}
+.home-tile.t-tg::before{background:linear-gradient(90deg,var(--tg),var(--blue));}
+.home-tile.t-about::before{background:linear-gradient(90deg,var(--purple),var(--tg));}
+.home-tile:active{transform:scale(.97);}
+@media(hover:hover){.home-tile:hover{border-color:var(--border2);transform:translateY(-2px);}}
+.tile-ico{font-size:28px;}
+.tile-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;}
+.tile-sub{font-size:11px;color:var(--muted);line-height:1.4;}
+.tile-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;font-family:'DM Mono',monospace;}
+.badge-live{background:var(--red);color:#fff;}
+.badge-gold{background:var(--gold);color:#000;}
+.tg-banner{display:flex;align-items:center;gap:12px;background:rgba(42,171,238,.07);border:1px solid rgba(42,171,238,.2);border-radius:14px;padding:14px;margin:0 16px 16px;text-decoration:none;}
+@media(min-width:700px){.tg-banner{margin:0 24px 16px;}}
+.tg-ico{width:40px;height:40px;border-radius:50%;background:rgba(42,171,238,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tg-title{font-size:13px;font-weight:700;color:var(--tg);}
+.tg-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.page-head{padding:20px 16px 8px;max-width:1080px;margin:0 auto;}
+.page-head h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,8vw,52px);letter-spacing:1px;margin-bottom:4px;}
+.sport-tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:1080px;margin:0 auto;}
+.sport-tabs::-webkit-scrollbar{display:none;}
+.stab{padding:6px 16px;border-radius:99px;border:1px solid var(--border2);background:none;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s;}
+.stab.on{background:var(--card2);color:var(--text);border-color:var(--border2);}
+.stab.on.st{color:var(--green);border-color:rgba(0,240,160,.35);}
+.stab.on.sf{color:var(--blue);border-color:rgba(61,139,255,.35);}
+.sport-section{display:none;padding:0 16px 16px;max-width:1080px;margin:0 auto;}
+.sport-section.on{display:block;}
+@media(min-width:700px){.sport-section{padding:0 24px 24px;}}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-top:12px;}
+.sec-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:99px;white-space:nowrap;}
+.tag-t{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.tag-pl{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+.tag-ll{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);}
+.tag-bun{background:rgba(249,115,22,.1);color:var(--el);border:1px solid rgba(249,115,22,.2);}
+.tag-sa{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.tag-l1{background:rgba(0,240,160,.08);color:var(--green);border:1px solid rgba(0,240,160,.15);}
+.sec-line{flex:1;height:1px;background:var(--border);}
+.sec-info{font-size:10px;color:var(--muted);white-space:nowrap;}
+.cards-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px;}
+@media(min-width:700px){.cards-grid{grid-template-columns:1fr 1fr;}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.card-stripe{height:3px;}
+.st-t{background:linear-gradient(90deg,var(--green),transparent);}
+.st-pl{background:linear-gradient(90deg,var(--blue),transparent);}
+.st-ll{background:linear-gradient(90deg,var(--gold),transparent);}
+.st-bun{background:linear-gradient(90deg,var(--el),transparent);}
+.st-sa{background:linear-gradient(90deg,var(--purple),transparent);}
+.st-l1{background:linear-gradient(90deg,#00c878,transparent);}
+.card-meta{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0;}
+.card-comp{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:700;}
+.card-time{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);background:rgba(245,200,66,.08);padding:3px 9px;border-radius:99px;border:1px solid rgba(245,200,66,.2);}
+.affiche{display:flex;align-items:center;padding:14px 14px 10px;gap:8px;}
+.team-side{flex:1;}
+.team-side.right{text-align:right;align-items:flex-end;display:flex;flex-direction:column;}
+.country-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);display:block;margin-bottom:4px;}
+.tname{font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,4.2vw,21px);letter-spacing:.5px;line-height:1.05;color:var(--text);display:block;}
+.tsub{font-size:10px;color:var(--muted);margin-top:3px;display:block;}
+.vsb{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;padding:0 4px;}
+.vsdot{width:6px;height:6px;border-radius:50%;background:var(--dim);}
+.vstxt{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:var(--muted);}
+.prono-box{margin:0 14px;background:rgba(0,0,0,.28);border-radius:12px;padding:12px;border:1px solid var(--border);}
+.prono-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.prono-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.prono-winner{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4.5vw,23px);letter-spacing:.5px;line-height:1;display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.prono-detail{font-size:11px;color:var(--muted);line-height:1.45;}
+.bars{padding:10px 14px 0;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bar-name{font-size:10px;color:var(--muted);font-weight:600;width:95px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.05);overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;}
+.fg{background:var(--green);}.fb{background:var(--blue);}.fel{background:var(--el);}.fgr{background:var(--dim);}.fpu{background:var(--purple);}.fgo{background:var(--gold);}
+.bar-pct{font-family:'DM Mono',monospace;font-size:10px;width:28px;text-align:right;flex-shrink:0;}
+.chips{display:flex;align-items:center;gap:6px;padding:10px 14px 14px;flex-wrap:wrap;}
+.chip{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:99px;}
+.cg{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.cy{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);}
+.co{background:rgba(249,115,22,.1);color:var(--el);border:1px solid rgba(249,115,22,.2);}
+.cb{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+.cp{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.chip-txt{font-size:10px;color:var(--muted);}
+.histo-header{padding:24px 16px 16px;max-width:1080px;margin:0 auto;}
+.histo-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,9vw,60px);letter-spacing:1px;line-height:.95;margin-bottom:14px;}
+.histo-header h2 .acc{color:var(--gold);}
+.rate-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:16px;}
+.rate-circle{width:70px;height:70px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--dim);flex-shrink:0;}
+.rate-num{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
+.rate-pct{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:1px;}
+.rate-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.rate-detail{font-size:11px;color:var(--muted);}
+.rate-stats{display:flex;gap:14px;margin-top:8px;}
+.rstat{display:flex;flex-direction:column;gap:2px;}
+.rstat-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;}
+.rstat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
+.rate-bar-wrap{margin-top:10px;}
+.rate-bar-track{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;}
+.rate-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .6s ease;}
+.histo-list{display:flex;flex-direction:column;gap:10px;max-width:1080px;margin:0 auto;padding:0 16px 16px;}
+@media(min-width:700px){.histo-list{padding:0 24px 24px;}}
+.histo-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;align-items:stretch;}
+.histo-bar{width:5px;flex-shrink:0;}
+.histo-bar.won{background:var(--green);}
+.histo-bar.lost{background:var(--red);}
+.histo-content{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:5px;}
+.histo-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.histo-matchup{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.5px;color:var(--text);line-height:1.1;}
+.histo-verdict{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+.v-won{background:rgba(0,240,160,.12);color:var(--green);border:1px solid rgba(0,240,160,.25);}
+.v-lost{background:rgba(255,77,106,.12);color:var(--red);border:1px solid rgba(255,77,106,.25);}
+.histo-mid{font-size:11px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.histo-mid strong{color:var(--text);}
+.histo-score{font-family:'DM Mono',monospace;}
+.histo-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.histo-date{font-size:10px;color:var(--muted);}
+.histo-sport{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border-radius:99px;}
+.hs-tennis{background:rgba(0,240,160,.1);color:var(--green);border:1px solid rgba(0,240,160,.2);}
+.hs-foot{background:rgba(61,139,255,.1);color:var(--blue);border:1px solid rgba(61,139,255,.2);}
+.empty-state{text-align:center;padding:40px 24px;color:var(--muted);}
+.empty-ico{font-size:36px;margin-bottom:10px;}
+.empty-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:12px;line-height:1.5;}
+.about-wrap{padding:24px 16px;max-width:600px;margin:0 auto;}
+.about-block{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px;}
+.about-block-title{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text);}
+.about-block-text{font-size:12px;color:var(--muted);line-height:1.7;}
+.about-warn{background:rgba(255,77,106,.07);border:1px solid rgba(255,77,106,.2);}
+.about-warn .about-block-title{color:var(--red);}
+.source-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:99px;background:rgba(42,171,238,.1);color:var(--tg);border:1px solid rgba(42,171,238,.2);margin-top:8px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.card,.histo-item{animation:fadeUp .25s ease both;}
+.card:nth-child(2),.histo-item:nth-child(2){animation-delay:.05s;}
+.card:nth-child(3),.histo-item:nth-child(3){animation-delay:.1s;}
+.card:nth-child(4),.histo-item:nth-child(4){animation-delay:.15s;}
+.card:nth-child(5),.histo-item:nth-child(5){animation-delay:.2s;}
+.card:nth-child(6),.histo-item:nth-child(6){animation-delay:.25s;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#" onclick="showPage('home');return false;">CASH<span> PRONO CLUB</span></a>
+  <a class="tg-nav" href="https://t.me/cashpronoclub" target="_blank">✈️ Telegram</a>
+</nav>
+
+<div class="page on" id="page-home">
+  <div class="hero">
+    <div class="kicker" id="date-kicker"></div>
+    <h1>CASH<br><span class="acc">PRONO</span><br>CLUB</h1>
+    <p class="hero-sub">Pronostics sport basés sur Flashscore & Sofascore. Tennis ATP · Top 5 européen.</p>
+  </div>
+  <div class="home-grid">
+    <div class="home-tile t-matchs" onclick="showPage('matchs')">
+      <div class="tile-ico">🎯</div>
+      <div class="tile-title">Matchs</div>
+      <div class="tile-sub">ATP Barcelone · ATP Munich · Premier League</div>
+      <span class="tile-badge badge-live" id="badge-matchs">11</span>
+    </div>
+    <div class="home-tile t-histo" onclick="showPage('histo')">
+      <div class="tile-ico">📊</div>
+      <div class="tile-title">Historique</div>
+      <div class="tile-sub">Taux de réussite & résultats</div>
+      <span class="tile-badge badge-gold" id="badge-histo">—</span>
+    </div>
+    <div class="home-tile t-tg" onclick="window.open('https://t.me/cashpronoclub','_blank')">
+      <div class="tile-ico">✈️</div>
+      <div class="tile-title">Telegram</div>
+      <div class="tile-sub">@cashpronoclub · Rejoins</div>
+    </div>
+    <div class="home-tile t-about" onclick="showPage('about')">
+      <div class="tile-ico">ℹ️</div>
+      <div class="tile-title">À propos</div>
+      <div class="tile-sub">Méthode · Sources · Disclaimer</div>
+    </div>
+  </div>
+  <a class="tg-banner" href="https://t.me/cashpronoclub" target="_blank">
+    <div class="tg-ico">✈️</div>
+    <div class="tg-body">
+      <div class="tg-title">@cashpronoclub — Pronostics exclusifs</div>
+      <div class="tg-sub">Value bets · Alertes avant chaque match · Analyses Flashscore</div>
+    </div>
+  </a>
+</div>
+
+<div class="page" id="page-matchs">
+  <div class="page-head">
+    <div class="kicker" id="date-kicker-matchs"></div>
+    <h2>LES <span style="color:var(--gold)">MATCHS</span></h2>
+  </div>
+  <div class="sport-tabs">
+    <button class="stab on" id="stab-all" onclick="switchSport('all')">🏠 Tous</button>
+    <button class="stab st" id="stab-tennis" onclick="switchSport('tennis')">🎾 Tennis</button>
+    <button class="stab sf" id="stab-foot" onclick="switchSport('foot')">⚽ Football</button>
+  </div>
+  <div class="sport-section on" id="ss-all">
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 ATP Barcelone — 1er tour</span><div class="sec-line"></div><span class="sec-info">dès 11h00</span></div>
+    <div class="cards-grid" id="g-t-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 ATP Munich — 1er tour</span><div class="sec-line"></div><span class="sec-info">dès 11h00</span></div>
+    <div class="cards-grid" id="g-t2-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 ATP Munich — 1er tour</span><div class="sec-line"></div><span class="sec-info">dès 11h00</span></div>
+    <div class="cards-grid" id="g-t2-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-pl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League — J33</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-pl-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-ll">🇪🇸 LaLiga — J31</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-ll-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-bun">🇩🇪 Bundesliga — J29</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-bun-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-sa">🇮🇹 Serie A — J33</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-sa-all"></div>
+    <div class="sec-head"><span class="sec-tag tag-l1">🇫🇷 Ligue 1 — J29</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-l1-all"></div>
+  </div>
+  <div class="sport-section" id="ss-tennis">
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 ATP Barcelone — 1er tour</span><div class="sec-line"></div><span class="sec-info">dès 11h00</span></div>
+    <div class="cards-grid" id="g-t-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-t">🎾 ATP Munich — 1er tour</span><div class="sec-line"></div><span class="sec-info">dès 11h00</span></div>
+    <div class="cards-grid" id="g-t2-only"></div>
+  </div>
+  <div class="sport-section" id="ss-foot">
+    <div class="sec-head"><span class="sec-tag tag-pl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League — J33</span><div class="sec-line"></div><span class="sec-info">21h00</span></div>
+    <div class="cards-grid" id="g-pl-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-ll">🇪🇸 LaLiga — J31</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-ll-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-bun">🇩🇪 Bundesliga — J29</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-bun-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-sa">🇮🇹 Serie A — J33</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-sa-only"></div>
+    <div class="sec-head"><span class="sec-tag tag-l1">🇫🇷 Ligue 1 — J29</span><div class="sec-line"></div><span class="sec-info"></span></div>
+    <div class="cards-grid" id="g-l1-only"></div>
+  </div>
+</div>
+
+<div class="page" id="page-histo">
+  <div class="histo-header">
+    <div class="kicker">Résultats vérifiés · Flashscore · ATP Tour</div>
+    <h2>HISTO<span class="acc">RIQUE</span></h2>
+    <div class="rate-card">
+      <div class="rate-circle">
+        <span class="rate-num" id="rate-num" style="color:var(--muted)">—</span>
+        <span class="rate-pct">RÉUSSITE</span>
+      </div>
+      <div class="rate-body">
+        <div class="rate-title">Taux de réussite global</div>
+        <div class="rate-detail" id="rate-detail">Chargement…</div>
+        <div class="rate-stats">
+          <div class="rstat"><span class="rstat-num" id="stat-won" style="color:var(--green)">0</span><span class="rstat-lbl">Gagnés</span></div>
+          <div class="rstat"><span class="rstat-num" id="stat-lost" style="color:var(--red)">0</span><span class="rstat-lbl">Perdus</span></div>
+          <div class="rstat"><span class="rstat-num" id="stat-total" style="color:var(--muted)">0</span><span class="rstat-lbl">Total</span></div>
+        </div>
+        <div class="rate-bar-wrap"><div class="rate-bar-track"><div class="rate-bar-fill" id="rate-bar" style="width:0%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="bilan-container" style="padding:0 16px 12px;max-width:1080px;margin:0 auto;"></div>
+  <div class="histo-list" id="histo-list">
+    <div class="empty-state" id="histo-empty" style="display:none">
+      <div class="empty-ico">📭</div>
+      <div class="empty-title">Aucun historique</div>
+      <div class="empty-sub">Les résultats apparaîtront ici.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="kicker">Cash Prono Club</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,9vw,60px);letter-spacing:1px;margin-bottom:20px;">À <span style="color:var(--gold)">PROPOS</span></h2>
+    <div class="about-block">
+      <div class="about-block-title">📡 Sources utilisées</div>
+      <div class="about-block-text">Tous nos pronostics sont basés sur <strong style="color:var(--text)">Flashscore</strong>, <strong style="color:var(--text)">Sofascore</strong> et <strong style="color:var(--text)">ATP Tour</strong>. Résultats vérifiés avant chaque mise à jour.</div>
+      <div class="source-badge">⚡ Flashscore · Sofascore · ATP Tour · UEFA</div>
+    </div>
+    <div class="about-block">
+      <div class="about-block-title">🎯 Notre méthode</div>
+      <div class="about-block-text">Chaque jour : meilleurs matchs du top 5 européen + tournois ATP principaux. Analyse basée sur classements, forme récente, H2H, surface et stats Opta.</div>
+    </div>
+    <div class="about-block about-warn">
+      <div class="about-block-title">⚠️ Disclaimer</div>
+      <div class="about-block-text">Pronostics à titre informatif uniquement. Aucun résultat garanti. Pariez de façon responsable.</div>
+    </div>
+    <a href="https://t.me/cashpronoclub" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(42,171,238,.1);border:1px solid rgba(42,171,238,.3);border-radius:14px;padding:16px;color:var(--tg);font-weight:700;font-size:14px;text-decoration:none;">
+      ✈️ Rejoindre @cashpronoclub sur Telegram
+    </a>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="bnav-btn on" id="btn-home" onclick="showPage('home')"><span class="bico">🏠</span>Accueil</button>
+  <button class="bnav-btn" id="btn-matchs" onclick="showPage('matchs')"><span class="bico">🎯</span>Matchs</button>
+  <button class="bnav-btn" id="btn-histo" onclick="showPage('histo')"><span class="bico">📊</span>Historique</button>
+  <button class="bnav-btn" id="btn-about" onclick="showPage('about')"><span class="bico">ℹ️</span>À propos</button>
+</nav>
+
+<script>
+/* ══ MATCHS 13/04/2026 — Sources : Flashscore · ATP Tour ══ */
+
+const TENNIS_BCN = [
+  // ── ATP 500 BARCELONE — 1er tour (Flashscore · ATP Tour officiel)
+  {id:'bcn-buse-moutet',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Rafa Nadal',time:'11h00',matchEnd:'2026-04-13T12:00:00+02:00',
+   home:{flag:'PER',name:'BUSE',sub:'Wild Card · Local'},
+   away:{flag:'FRA',name:'MOUTET',sub:'Spécialiste terre battue'},
+   w:'MOUTET',wc:'var(--green)',d:'Moutet très à l\'aise sur terre face à Buse sans expérience ATP — avantage technique clair pour le Français',
+   bars:[{n:'Buse',p:30,c:'fgr'},{n:'Moutet',p:70,c:'fg',hi:1}],chip:'<span class="chip cg">Favori</span>',ct:'Moutet solide sur l\'ocre',cote:'1.58'},
+  {id:'bcn-etcheverry-draper',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Rafa Nadal',time:'~13h00',matchEnd:'2026-04-13T16:00:00+02:00',
+   home:{flag:'ARG',name:'ETCHEVERRY',sub:'Solide sur terre battue'},
+   away:{flag:'GBR',name:'DRAPER',sub:'#8 tête de série · QF Indian Wells'},
+   w:'DRAPER',wc:'var(--green)',d:'Draper retour sur terre après Indian Wells — Etcheverry dangereux sur la surface mais Draper tête de série et en forme',
+   bars:[{n:'Etcheverry',p:42,c:'fgr'},{n:'Draper',p:58,c:'fg',hi:1}],chip:'<span class="chip cg">Favori</span>',ct:'Match serré — léger avantage Draper',cote:'1.65'},
+  {id:'bcn-opelka-quinn',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Gimeno',time:'~13h30',matchEnd:'2026-04-13T16:30:00+02:00',
+   home:{flag:'USA',name:'OPELKA',sub:'Grand serveur · Retour'},
+   away:{flag:'USA',name:'QUINN',sub:'Qualifié'},
+   w:'OPELKA',wc:'var(--green)',d:'Opelka et son service monstre face à Quinn qualifié — sur terre Opelka moins à l\'aise mais devrait passer',
+   bars:[{n:'Opelka',p:60,c:'fg',hi:1},{n:'Quinn',p:40,c:'fgr'}],chip:'<span class="chip cg">Léger favori</span>',ct:'Opelka pour confirmer son retour',cote:'1.62'},
+  {id:'bcn-trungelliti-medjedovic',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Gimeno',time:'~15h00',matchEnd:'2026-04-13T18:00:00+02:00',
+   home:{flag:'ARG',name:'TRUNGELLITI',sub:'Lucky Loser'},
+   away:{flag:'SRB',name:'MEDJEDOVIC',sub:'Qualifié · Jeune talent'},
+   w:'MEDJEDOVIC',wc:'var(--green)',d:'Medjedovic jeune talent serbe face à Trungelliti lucky loser — match ouvert entre deux joueurs de bas de tableau',
+   bars:[{n:'Trungelliti',p:45,c:'fgr'},{n:'Medjedovic',p:55,c:'fg',hi:1}],chip:'<span class="chip cg">Léger favori</span>',ct:'Match incertain — légère préférence Medjedovic',cote:'1.55'},
+  {id:'bcn-norrie-wawrinka',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Rafa Nadal',time:'~16h00',matchEnd:'2026-04-13T19:00:00+02:00',
+   home:{flag:'GBR',name:'NORRIE',sub:'#7 tête de série'},
+   away:{flag:'SUI',name:'WAWRINKA',sub:'Wild Card · Dernière saison'},
+   w:'NORRIE',wc:'var(--green)',d:'Norrie tête de série face à Wawrinka en fin de carrière — Stan toujours capable d\'un grand match mais Norrie plus régulier',
+   bars:[{n:'Norrie',p:63,c:'fg',hi:1},{n:'Wawrinka',p:37,c:'fgr'}],chip:'<span class="chip cg">Favori</span>',ct:'Norrie pour passer — attention à Stan',cote:'1.28'},
+  {id:'bcn-borges-mannarino',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Gimeno',time:'~16h00',matchEnd:'2026-04-13T19:00:00+02:00',
+   home:{flag:'POR',name:'BORGES',sub:'En forme · Bon début de saison'},
+   away:{flag:'FRA',name:'MANNARINO',sub:'Régulier sur terre'},
+   w:'BORGES',wc:'var(--green)',d:'Borges en bonne forme cette saison face à Mannarino — le Portugais légèrement favori sur sa régularité actuelle',
+   bars:[{n:'Borges',p:58,c:'fg',hi:1},{n:'Mannarino',p:42,c:'fgr'}],chip:'<span class="chip cg">Léger favori</span>',ct:'Match serré — avantage Borges',cote:'1.29'},
+  {id:'bcn-munar-jodar',stripe:'st-t',comp:'1er tour · Barcelone ATP 500 · Pista Rafa Nadal',time:'~18h00',matchEnd:'2026-04-13T21:00:00+02:00',
+   home:{flag:'ESP',name:'MUNAR',sub:'Local · Spécialiste terre'},
+   away:{flag:'ESP',name:'JODAR',sub:'Wild Card · 19 ans · Vainqueur Marrakech'},
+   w:'MUNAR',wc:'var(--green)',d:'Derby espagnol ! Munar plus expérimenté face au prodige Jodar — le jeune vainqueur de Marrakech peut créer la surprise à domicile',
+   bars:[{n:'Munar',p:55,c:'fg',hi:1},{n:'Jodar',p:45,c:'fgr'}],chip:'<span class="chip cg">Léger favori</span>',ct:'Derby espagnol — Munar favori mais Jodar dangereux',cote:'1.46'},
+];
+
+const TENNIS_MUN = [
+  // ── ATP 500 MUNICH — 1er tour (Flashscore · ATP Tour officiel)
+  {id:'mun-rinderknech-michelsen',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Centre Court',time:'11h00',matchEnd:'2026-04-13T12:00:00+02:00',
+   home:{flag:'FRA',name:'RINDERKNECH',sub:'#7 tête de série'},
+   away:{flag:'USA',name:'MICHELSEN',sub:'Américain solide'},
+   w:'RINDERKNECH',wc:'var(--green)',d:'Rinderknech tête de série à Munich — favori logique sur terre face à Michelsen',
+   bars:[{n:'Rinderknech',p:62,c:'fg',hi:1},{n:'Michelsen',p:38,c:'fgr'}],chip:'<span class="chip cg">Favori</span>',ct:'Rinderknech pour passer',cote:'1.55'},
+  {id:'mun-nagal-cerundolo',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Centre Court',time:'~12h30',matchEnd:'2026-04-13T15:30:00+02:00',
+   home:{flag:'IND',name:'NAGAL',sub:'Qualifié'},
+   away:{flag:'ARG',name:'CERUNDOLO',sub:'#5 tête de série'},
+   w:'CERUNDOLO',wc:'var(--green)',d:'Cerundolo tête de série et spécialiste terre face à Nagal qualifié — logiquement favori',
+   bars:[{n:'Nagal',p:20,c:'fgr'},{n:'Cerundolo',p:80,c:'fg',hi:1}],chip:'<span class="chip cg">Grand favori</span>',ct:'Cerundolo pour s\'imposer',cote:'1.21'},
+  {id:'mun-nava-shelton',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Centre Court',time:'~14h00',matchEnd:'2026-04-13T17:00:00+02:00',
+   home:{flag:'USA',name:'NAVA',sub:'Lucky Loser'},
+   away:{flag:'USA',name:'SHELTON',sub:'#2 tête de série · Finaliste Munich 2025'},
+   w:'SHELTON',wc:'var(--green)',d:'Shelton finaliste à Munich l\'an passé face à Nava lucky loser — largement favori',
+   bars:[{n:'Nava',p:22,c:'fgr'},{n:'Shelton',p:78,c:'fg',hi:1}],chip:'<span class="chip cg">Grand favori</span>',ct:'Shelton pour confirmer son statut',cote:'1.28'},
+  {id:'mun-blockx-hanfmann',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Centre Court',time:'~15h30',matchEnd:'2026-04-13T18:30:00+02:00',
+   home:{flag:'BEL',name:'BLOCKX',sub:'Wild Card · 20 ans · Bonne forme Monte Carlo'},
+   away:{flag:'GER',name:'HANFMANN',sub:'Local · Solide à domicile'},
+   w:'BLOCKX',wc:'var(--green)',d:'Blockx impressionnant à Monte Carlo face à Hanfmann local — match serré mais avantage Blockx en confiance',
+   bars:[{n:'Blockx',p:55,c:'fg',hi:1},{n:'Hanfmann',p:45,c:'fgr'}],chip:'<span class="chip cg">Léger favori</span>',ct:'Blockx dans la continuité de Monte Carlo',cote:'1.80'},
+  {id:'mun-vandezandschulp-huesler',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Court 1',time:'11h00',matchEnd:'2026-04-13T12:00:00+02:00',
+   home:{flag:'NED',name:'VAN DE ZANDSCHULP',sub:'Solide sur terre battue'},
+   away:{flag:'SUI',name:'HUESLER',sub:'Qualifié'},
+   w:'VAN DE ZANDSCHULP',wc:'var(--green)',d:'Van de Zandschulp régulier sur terre face à Huesler qualifié — avantage logique pour le Néerlandais',
+   bars:[{n:'Van de Zandschulp',p:65,c:'fg',hi:1},{n:'Huesler',p:35,c:'fgr'}],chip:'<span class="chip cg">Favori</span>',ct:'VdZ pour passer au 2e tour',cote:'1.37'},
+  {id:'mun-diallo-sachko',stripe:'st-t',comp:'1er tour · Munich ATP 500 · Court 1',time:'~12h30',matchEnd:'2026-04-13T15:30:00+02:00',
+   home:{flag:'CAN',name:'DIALLO',sub:'En progression sur terre'},
+   away:{flag:'UKR',name:'SACHKO',sub:'Qualifié'},
+   w:'DIALLO',wc:'var(--green)',d:'Diallo face à Sachko qualifié — le Canadien favori logique dans ce match de 1er tour',
+   bars:[{n:'Diallo',p:65,c:'fg',hi:1},{n:'Sachko',p:35,c:'fgr'}],chip:'<span class="chip cg">Favori</span>',ct:'Diallo pour passer au prochain tour',cote:'1.55'},
+];
+
+const TENNIS = [...TENNIS_BCN, ...TENNIS_MUN];
+
+const PREMIER_LEAGUE = [
+  {id:'pl13-manutd-leeds',stripe:'st-pl',comp:'J33 · Old Trafford · Manchester',time:'21h00',matchEnd:'2026-04-13T23:05:00+02:00',
+   home:{flag:'ENG',name:'MANCHESTER UTD',sub:'#4 · Course Top 4 · Old Trafford'},
+   away:{flag:'ENG',name:'LEEDS UNITED',sub:'Promu · Course maintien'},
+   w:'MANCHESTER UTD',wc:'var(--blue)',d:'Man Utd à Old Trafford contre Leeds promu — les Red Devils ont besoin des 3 points pour la course au Top 4 et le public d\'Old Trafford est un atout',
+   bars:[{n:'Man Utd',p:62,c:'fb',hi:1},{n:'Nul',p:22,c:'fgr'},{n:'Leeds',p:16,c:'fgr'}],chip:'<span class="chip cb">Favori</span>',ct:'Man Utd pour s\'imposer à Old Trafford',cote:'1.75'},
+];
+
+const LALIGA = [];
+
+const BUNDESLIGA = [];
+
+const SERIE_A = [];
+
+const LIGUE_1 = [];
+
+/* ══ HISTORIQUE COMPLET VÉRIFIÉ — Flashscore · Sofascore · ATP Tour ══ */
+const REAL_HISTORY = [
+  // 7 AVRIL — Monte Carlo 2e tour
+  {id:'h-sinner-humbert',sport:'tennis',home:'SINNER',away:'HUMBERT',prono:'SINNER',score:'6-3 6-0',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.22},
+  {id:'h-alcaraz-baez',sport:'tennis',home:'ALCARAZ',away:'BAEZ',prono:'ALCARAZ',score:'6-1 6-3',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.18},
+  {id:'h-berrettini-bautista',sport:'tennis',home:'BERRETTINI',away:'BAUTISTA AGUT',prono:'BERRETTINI',score:'4-0 ret.',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.55},
+  {id:'h-hurkacz-darderi',sport:'tennis',home:'HURKACZ',away:'DARDERI',prono:'HURKACZ',score:'7-6(4) 5-7 6-1',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.35},
+  {id:'h-etcheverry-dimitrov',sport:'tennis',home:'ETCHEVERRY',away:'DIMITROV',prono:'ETCHEVERRY',score:'6-4 2-6 6-3',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.75},
+  {id:'h-monfils-bublik',sport:'tennis',home:'MONFILS',away:'BUBLIK',prono:'BUBLIK',score:'4-6 4-6',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.45},
+  {id:'h-deminaur-norrie',sport:'tennis',home:'DE MINAUR',away:'NORRIE',prono:'DE MINAUR',score:'7-6(5) 2-6 6-2',result:'won',comp:'2e tour · Monte Carlo',date:'07/04/2026',cote:1.30},
+  // 7 AVRIL — LDC QF aller
+  {id:'h-sporting-arsenal',sport:'foot',home:'SPORTING CP',away:'ARSENAL',prono:'ARSENAL',score:'0-1 (Havertz 90+1)',result:'won',comp:'QF aller · Ligue des Champions',date:'07/04/2026',cote:2.10},
+  {id:'h-realmadrid-bayern',sport:'foot',home:'REAL MADRID',away:'BAYERN MUNICH',prono:'BAYERN MUNICH',score:'1-2 (Díaz 41, Kane 46 / Mbappé 74)',result:'won',comp:'QF aller · Ligue des Champions',date:'07/04/2026',cote:2.45},
+  // 8 AVRIL — Monte Carlo 3e tour
+  {id:'h-zverev-garin',sport:'tennis',home:'ZVEREV',away:'GARIN',prono:'ZVEREV',score:'4-6 6-4 7-5',result:'won',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.28},
+  {id:'h-fonseca-rinderknech',sport:'tennis',home:'FONSECA',away:'RINDERKNECH',prono:'FONSECA',score:'6-2 6-3',result:'won',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.65},
+  {id:'h-ruud-moutet',sport:'tennis',home:'RUUD',away:'MOUTET',prono:'RUUD',score:'6-3 6-4',result:'won',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.40},
+  {id:'h-rublev-bergs',sport:'tennis',home:'RUBLEV',away:'BERGS',prono:'RUBLEV',score:'4-6 1-6',result:'lost',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.22},
+  {id:'h-vacherot-musetti',sport:'tennis',home:'VACHEROT',away:'MUSETTI',prono:'MUSETTI',score:'7-6(6) 7-5',result:'lost',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.35},
+  {id:'h-lehecka-tabilo',sport:'tennis',home:'LEHECKA',away:'TABILO',prono:'LEHECKA',score:'4-6 7-6(4) 6-3',result:'won',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.50},
+  {id:'h-machac-cerundolo',sport:'tennis',home:'MACHAC',away:'CERUNDOLO',prono:'CERUNDOLO',score:'6-4 1-6 6-3',result:'lost',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:1.60},
+  {id:'h-berrettini-medvedev',sport:'tennis',home:'BERRETTINI',away:'MEDVEDEV',prono:'BERRETTINI',score:'6-0 6-0',result:'won',comp:'3e tour · Monte Carlo',date:'08/04/2026',cote:2.80},
+  // 8 AVRIL — LDC QF aller
+  {id:'h-psg-liverpool',sport:'foot',home:'PSG',away:'LIVERPOOL',prono:'PSG',score:'2-0 (Doué 11, Kvaratskhelia 65)',result:'won',comp:'QF aller · Ligue des Champions',date:'08/04/2026',cote:2.20},
+  {id:'h-barca-atletico',sport:'foot',home:'FC BARCELONE',away:'ATLETICO MADRID',prono:'FC BARCELONE',score:'0-2 (J.Alvarez 45, Griezmann 70)',result:'lost',comp:'QF aller · Ligue des Champions',date:'08/04/2026',cote:1.85},
+  // 9 AVRIL — Monte Carlo 8es
+  {id:'h-zverev-bergs',sport:'tennis',home:'ZVEREV',away:'BERGS',prono:'ZVEREV',score:'6-2 7-5',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.18},
+  {id:'h-sinner-machac',sport:'tennis',home:'SINNER',away:'MACHAC',prono:'SINNER',score:'6-1 6-7(3) 6-3',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.20},
+  {id:'h-alcaraz-etcheverry',sport:'tennis',home:'ALCARAZ',away:'ETCHEVERRY',prono:'ALCARAZ',score:'6-1 4-6 6-3',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.22},
+  {id:'h-vacherot-hurkacz',sport:'tennis',home:'VACHEROT',away:'HURKACZ',prono:'HURKACZ',score:'5-7 6-2 6-1',result:'lost',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.35},
+  {id:'h-berrettini-fonseca',sport:'tennis',home:'BERRETTINI',away:'FONSECA',prono:'FONSECA',score:'3-6 2-6',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.85},
+  {id:'h-faa-ruud',sport:'tennis',home:'AUGER-ALIASSIME',away:'RUUD',prono:'AUGER-ALIASSIME',score:'7-5 2-2 ret.',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.55},
+  {id:'h-bublik-lehecka',sport:'tennis',home:'BUBLIK',away:'LEHECKA',prono:'BUBLIK',score:'6-2 7-5',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.42},
+  {id:'h-deminaur-blockx',sport:'tennis',home:'DE MINAUR',away:'BLOCKX',prono:'DE MINAUR',score:'7-5 7-6(4)',result:'won',comp:'8e finale · Monte Carlo',date:'09/04/2026',cote:1.25},
+  // 9 AVRIL — Europa League QF aller
+  {id:'h-fribourg-celta',sport:'foot',home:'SC FRIBOURG',away:'CELTA VIGO',prono:'SC FRIBOURG',score:'3-0 (Grifo 10, Beste 32, Ginter 78)',result:'won',comp:'QF aller · Europa League',date:'09/04/2026',cote:1.90},
+  {id:'h-porto-nottingham',sport:'foot',home:'FC PORTO',away:'NOTTINGHAM F.',prono:'FC PORTO',score:'1-1',result:'lost',comp:'QF aller · Europa League',date:'09/04/2026',cote:1.75},
+  {id:'h-bologne-villa',sport:'foot',home:'BOLOGNE',away:'ASTON VILLA',prono:'ASTON VILLA',score:'1-3 (Konsa 44, Watkins 51 90+4)',result:'won',comp:'QF aller · Europa League',date:'09/04/2026',cote:2.05},
+  // 10 AVRIL — Monte Carlo QF
+  {id:'mc10-fonseca-zverev',sport:'tennis',home:'FONSECA',away:'ZVEREV',prono:'ZVEREV',score:'7-5 6-7(3) 6-3',result:'won',comp:'QF · Monte Carlo',date:'10/04/2026',cote:1.30},
+  {id:'mc10-faa-sinner',sport:'tennis',home:'AUGER-ALIASSIME',away:'SINNER',prono:'SINNER',score:'6-3 6-4',result:'won',comp:'QF · Monte Carlo',date:'10/04/2026',cote:1.28},
+  {id:'mc10-alcaraz-bublik',sport:'tennis',home:'ALCARAZ',away:'BUBLIK',prono:'ALCARAZ',score:'6-3 6-0',result:'won',comp:'QF · Monte Carlo',date:'10/04/2026',cote:1.35},
+  {id:'mc10-vacherot-deminaur',sport:'tennis',home:'VACHEROT',away:'DE MINAUR',prono:'DE MINAUR',score:'6-4 3-6 6-3',result:'lost',comp:'QF · Monte Carlo',date:'10/04/2026',cote:1.40},
+  // 10 AVRIL — Football
+  {id:'pl10-westham-wolves',sport:'foot',home:'WEST HAM',away:'WOLVES',prono:'WEST HAM',score:'4-0',result:'won',comp:'J32 · Premier League',date:'10/04/2026',cote:1.95},
+  {id:'ll10-realmadrid-girona',sport:'foot',home:'REAL MADRID',away:'GIRONA',prono:'REAL MADRID',score:'1-1',result:'lost',comp:'J31 · LaLiga',date:'10/04/2026',cote:1.42},
+  {id:'bun10-augsburg-hoffenheim',sport:'foot',home:'AUGSBURG',away:'HOFFENHEIM',prono:'AUGSBURG',score:'2-2',result:'lost',comp:'J29 · Bundesliga',date:'10/04/2026',cote:2.10},
+  {id:'sa10-roma-pisa',sport:'foot',home:'AS ROMA',away:'PISA',prono:'AS ROMA',score:'3-0',result:'won',comp:'J33 · Serie A',date:'10/04/2026',cote:1.55},
+  {id:'l1-parisfc-monaco',sport:'foot',home:'PARIS FC',away:'MONACO',prono:'MONACO',score:'4-1',result:'lost',comp:'J29 · Ligue 1',date:'10/04/2026',cote:1.65},
+  {id:'l1-marseille-metz',sport:'foot',home:'MARSEILLE',away:'METZ',prono:'MARSEILLE',score:'3-1',result:'won',comp:'J29 · Ligue 1',date:'10/04/2026',cote:1.30},
+  // 11 AVRIL — Monte Carlo ½ finales
+  {id:'mc11-sinner-zverev',sport:'tennis',home:'SINNER',away:'ZVEREV',prono:'SINNER',score:'6-1 6-4',result:'won',comp:'½ finale · Monte Carlo',date:'11/04/2026',cote:1.38},
+  {id:'mc11-alcaraz-vacherot',sport:'tennis',home:'ALCARAZ',away:'VACHEROT',prono:'ALCARAZ',score:'6-4 6-4',result:'won',comp:'½ finale · Monte Carlo',date:'11/04/2026',cote:1.12},
+  // 11 AVRIL — Premier League
+  {id:'pl11-arsenal-bournemouth',sport:'foot',home:'ARSENAL',away:'BOURNEMOUTH',prono:'ARSENAL',score:'1-2',result:'lost',comp:'J32 · Premier League',date:'11/04/2026',cote:1.55},
+  {id:'pl11-liverpool-fulham',sport:'foot',home:'LIVERPOOL',away:'FULHAM',prono:'LIVERPOOL',score:'2-0',result:'won',comp:'J32 · Premier League',date:'11/04/2026',cote:1.55},
+  // 11 AVRIL — LaLiga
+  {id:'ll11-barcelone-espanyol',sport:'foot',home:'BARCELONE',away:'ESPANYOL',prono:'BARCELONE',score:'4-1',result:'won',comp:'J31 · LaLiga',date:'11/04/2026',cote:1.28},
+  {id:'ll11-seville-atletico',sport:'foot',home:'SÉVILLE',away:'ATLÉTICO MADRID',prono:'ATLÉTICO MADRID',score:'2-1',result:'lost',comp:'J31 · LaLiga',date:'11/04/2026',cote:1.90},
+  // 11 AVRIL — Bundesliga
+  {id:'bun11-dortmund-leverkusen',sport:'foot',home:'DORTMUND',away:'LEVERKUSEN',prono:'LEVERKUSEN',score:'0-1',result:'won',comp:'J29 · Bundesliga',date:'11/04/2026',cote:2.05},
+  {id:'bun11-leipzig-gladbach',sport:'foot',home:'RB LEIPZIG',away:'M\'GLADBACH',prono:'RB LEIPZIG',score:'1-0',result:'won',comp:'J29 · Bundesliga',date:'11/04/2026',cote:1.45},
+  {id:'bun11-stpauli-bayern',sport:'foot',home:'ST PAULI',away:'BAYERN MUNICH',prono:'BAYERN MUNICH',score:'0-5',result:'won',comp:'J29 · Bundesliga',date:'11/04/2026',cote:1.22},
+  // 11 AVRIL — Ligue 1
+  {id:'l1-rennes-angers',sport:'foot',home:'RENNES',away:'ANGERS',prono:'RENNES',score:'2-1',result:'won',comp:'J29 · Ligue 1',date:'11/04/2026',cote:1.62},
+  // 12 AVRIL — Monte Carlo FINALE
+  {id:'mc12-alcaraz-sinner',sport:'tennis',home:'ALCARAZ',away:'SINNER',prono:'ALCARAZ',score:'6-7(5) 3-6',result:'lost',comp:'Finale · Monte Carlo',date:'12/04/2026',cote:1.72},
+  // 12 AVRIL — Premier League
+  {id:'pl12-chelsea-mancity',sport:'foot',home:'CHELSEA',away:'MANCHESTER CITY',prono:'MANCHESTER CITY',score:'0-3',result:'won',comp:'J32 · Premier League',date:'12/04/2026',cote:2.30},
+  // 12 AVRIL — Ligue 1
+  {id:'l1-toulouse-lille',sport:'foot',home:'TOULOUSE',away:'LILLE',prono:'LILLE',score:'0-4',result:'won',comp:'J29 · Ligue 1',date:'12/04/2026',cote:1.70},
+  {id:'l1-lyon-lorient',sport:'foot',home:'LYON',away:'LORIENT',prono:'LYON',score:'2-0',result:'won',comp:'J29 · Ligue 1',date:'12/04/2026',cote:1.55},
+  // 12 AVRIL — Serie A
+  {id:'sa12-parme-naples',sport:'foot',home:'PARME',away:'NAPLES',prono:'NAPLES',score:'1-1',result:'lost',comp:'J33 · Serie A',date:'12/04/2026',cote:1.58},
+  // 13 AVRIL — ATP Barcelone 1er tour
+  {id:'bcn-buse-moutet',sport:'tennis',home:'BUSE',away:'MOUTET',prono:'MOUTET',score:'4-6 6-6 retire',result:'won',comp:'1er tour · Barcelone ATP 500',date:'13/04/2026',cote:1.58},
+  // 13 AVRIL — ATP Munich 1er tour
+  {id:'mun-rinderknech-michelsen',sport:'tennis',home:'RINDERKNECH',away:'MICHELSEN',prono:'RINDERKNECH',score:'6-6 6-3',result:'won',comp:'1er tour · Munich ATP 500',date:'13/04/2026',cote:1.55},
+  {id:'mun-vandezandschulp-huesler',sport:'tennis',home:'VAN DE ZANDSCHULP',away:'HUESLER',prono:'VAN DE ZANDSCHULP',score:'7-9 6-7',result:'won',comp:'1er tour · Munich ATP 500',date:'13/04/2026',cote:1.37},
+];
+
+/* ══ STORAGE ══ */
+const SK='cpc_history_v23'; const MK='cpc_moved_v23';
+function loadH(){try{return JSON.parse(localStorage.getItem(SK)||'null');}catch(e){return null;}}
+function saveH(h){localStorage.setItem(SK,JSON.stringify(h));}
+function loadM(){try{return JSON.parse(localStorage.getItem(MK)||'[]');}catch(e){return[];}}
+function saveM(m){localStorage.setItem(MK,JSON.stringify(m));}
+function initHistory(){if(loadH()===null){saveH(REAL_HISTORY);saveM(REAL_HISTORY.map(h=>h.id));}}
+
+/* ══ CARD BUILDER ══ */
+function buildCard(m){
+  const bars=m.bars.map(b=>`<div class="bar-row"><span class="bar-name">${b.n}</span><div class="bar-track"><div class="bar-fill ${b.c}" style="width:${b.p}%"></div></div><span class="bar-pct" style="color:${b.hi?m.wc:'var(--muted)'}">${b.p}%</span></div>`).join('');
+  const coteHtml=m.cote?`<span style="font-family:'DM Mono',monospace;font-size:13px;background:rgba(245,200,66,.13);color:var(--gold);border:1px solid rgba(245,200,66,.3);padding:2px 9px;border-radius:99px;margin-left:8px;vertical-align:middle">${m.cote}</span>`:'';
+  return `<div class="card"><div class="card-stripe ${m.stripe}"></div><div class="card-meta"><span class="card-comp">${m.comp}</span><span class="card-time">${m.time}</span></div><div class="affiche"><div class="team-side"><span class="country-tag">${m.home.flag}</span><span class="tname">${m.home.name}</span><span class="tsub">${m.home.sub}</span></div><div class="vsb"><div class="vsdot"></div><span class="vstxt">VS</span><div class="vsdot"></div></div><div class="team-side right"><span class="country-tag">${m.away.flag}</span><span class="tname">${m.away.name}</span><span class="tsub">${m.away.sub}</span></div></div><div class="prono-box"><div class="prono-lbl">Notre pronostic</div><div class="prono-winner" style="color:${m.wc}">🏆 ${m.w}${coteHtml}</div><div class="prono-detail">${m.d}</div></div><div class="bars">${bars}</div><div class="chips">${m.chip}<span class="chip-txt">${m.ct}</span></div></div>`;
+}
+
+/* ══ RENDER MATCHS ══ */
+function fill(id,arr){
+  const el=document.getElementById(id); if(!el)return;
+  const moved=loadM(); const active=arr.filter(m=>!moved.includes(m.id));
+  el.innerHTML=active.length===0?`<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">✅</div><div class="empty-title">Terminé</div><div class="empty-sub">Résultats dans l'Historique.</div></div>`:active.map(buildCard).join('');
+}
+function renderMatchs(){
+  fill('g-t-all',TENNIS_BCN);fill('g-t-only',TENNIS_BCN);
+  fill('g-t2-all',TENNIS_MUN);fill('g-t2-only',TENNIS_MUN);
+  fill('g-pl-all',PREMIER_LEAGUE);fill('g-pl-only',PREMIER_LEAGUE);
+  fill('g-ll-all',LALIGA);fill('g-ll-only',LALIGA);
+  fill('g-bun-all',BUNDESLIGA);fill('g-bun-only',BUNDESLIGA);
+  fill('g-sa-all',SERIE_A);fill('g-sa-only',SERIE_A);
+  fill('g-l1-all',LIGUE_1);fill('g-l1-only',LIGUE_1);
+  const moved=loadM(); const all=[...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  document.getElementById('badge-matchs').textContent=all.filter(m=>!moved.includes(m.id)).length;
+}
+
+/* ══ RENDER HISTORY ══ */
+function buildHItem(h){
+  const won=h.result==='won'; const pending=h.result==='pending';
+  const mise=100;
+  const coteVal=h.cote||null;
+  let gainHtml='';
+  if(coteVal&&!pending){
+    if(won){
+      const gain=Math.round((coteVal-1)*mise);
+      gainHtml=`<span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);background:rgba(0,240,160,.08);border:1px solid rgba(0,240,160,.2);padding:2px 8px;border-radius:99px;margin-left:6px">+${gain}€</span>`;
+    } else {
+      gainHtml=`<span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--red);background:rgba(255,77,106,.08);border:1px solid rgba(255,77,106,.2);padding:2px 8px;border-radius:99px;margin-left:6px">-${mise}€</span>`;
+    }
+  }
+  const coteLabel=coteVal?`<span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);margin-left:4px">@${Number(coteVal).toFixed(2)}</span>`:'';
+  const verdict=pending
+    ?`<span class="histo-verdict" style="color:var(--muted)">⏳ EN ATTENTE</span>`
+    :`<span class="histo-verdict ${won?'v-won':'v-lost'}">${won?'✓ PASSÉ':'✗ RATÉ'}</span>`;
+  return `<div class="histo-item"><div class="histo-bar ${pending?'':''}${won?'won':pending?'':'lost'}"></div><div class="histo-content"><div class="histo-top"><span class="histo-matchup">${h.home} vs ${h.away}</span>${verdict}</div><div class="histo-mid"><span>Prono : <strong>${h.prono}</strong>${coteLabel}</span>${h.score?`<span class="histo-score">· ${h.score}</span>`:''}</div><div class="histo-bottom"><span class="histo-date">${h.date} · ${h.comp}</span><span style="display:flex;align-items:center;gap:4px"><span class="histo-sport ${h.sport==='tennis'?'hs-tennis':'hs-foot'}">${h.sport==='tennis'?'🎾 Tennis':'⚽ Football'}</span>${gainHtml}</span></div></div></div>`;
+}
+
+function renderHistory(){
+  const history=loadH()||[]; const list=document.getElementById('histo-list'); const empty=document.getElementById('histo-empty');
+  list.querySelectorAll('.histo-item').forEach(i=>i.remove());
+  const won=history.filter(h=>h.result==='won').length;
+  const lost=history.filter(h=>h.result==='lost').length;
+  const total=history.length;
+  const rate=total>0?Math.round((won/total)*100):null;
+  document.getElementById('stat-won').textContent=won;
+  document.getElementById('stat-lost').textContent=lost;
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('badge-histo').textContent=total;
+  if(rate!==null){const rn=document.getElementById('rate-num');rn.textContent=rate+'%';rn.style.color=rate>=60?'var(--green)':rate>=40?'var(--gold)':'var(--red)';document.getElementById('rate-bar').style.width=rate+'%';document.getElementById('rate-detail').textContent=`${won} pronostic${won>1?'s':''} réussi${won>1?'s':''} sur ${total}`;}
+  else{document.getElementById('rate-num').textContent='—';document.getElementById('rate-bar').style.width='0%';document.getElementById('rate-detail').textContent='Aucun résultat';}
+  // Bilan financier — une seule tuile dans #bilan-container
+  const mise=100; let totalMise=0, totalRetour=0;
+  history.forEach(h=>{
+    if(h.result==='won'||h.result==='lost'){
+      totalMise+=mise;
+      if(h.result==='won'&&h.cote) totalRetour+=Math.round(mise*Number(h.cote));
+    }
+  });
+  const bilan=totalRetour-totalMise;
+  const bilanColor=bilan>=0?'var(--green)':'var(--red)';
+  const bilanSign=bilan>=0?'+':'';
+  const bc=document.getElementById('bilan-container');
+  if(bc) bc.innerHTML=`<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,${bilanColor},transparent)"></div><div style="text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Misé total</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text)">${totalMise}€</div></div><div style="text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Retour total</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text)">${totalRetour}€</div></div><div style="text-align:center"><div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Bénéfice net</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:${bilanColor}">${bilanSign}${bilan}€</div></div></div>`;
+  if(total===0){empty.style.display='block';return;}
+  empty.style.display='none';
+  [...history].reverse().forEach(h=>list.insertAdjacentHTML('beforeend',buildHItem(h)));
+}
+
+/* ══ AUTO-MOVE EXPIRED ══ */
+function checkExpired(){
+  const now=new Date(); const moved=loadM(); let history=loadH()||[]; let changed=false;
+  const all=[...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  all.forEach(m=>{
+    if(moved.includes(m.id))return;
+    if(now>=new Date(m.matchEnd)){
+      if(!history.find(h=>h.id===m.id)){
+        history.push({id:m.id,sport:m.stripe==='st-t'?'tennis':'foot',home:m.home.name,away:m.away.name,prono:m.w,score:'',result:'pending',comp:m.comp,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})});
+        changed=true;
+      }
+      moved.push(m.id);
+    }
+  });
+  if(changed){saveH(history);saveM(moved);renderMatchs();renderHistory();}
+}
+
+/* markResult depuis la console : markResult('mc11-sinner-zverev','won','6-3 6-2') */
+window.markResult=function(id,result,score=''){
+  const all=[...TENNIS,...PREMIER_LEAGUE,...LALIGA,...BUNDESLIGA,...SERIE_A,...LIGUE_1];
+  const m=all.find(x=>x.id===id); if(!m){console.warn('ID introuvable:',id);return;}
+  let history=loadH()||[]; const moved=loadM();
+  const entry={id,sport:m.stripe==='st-t'?'tennis':'foot',home:m.home.name,away:m.away.name,prono:m.w,score,result,comp:m.comp,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})};
+  const idx=history.findIndex(h=>h.id===id); if(idx>=0)history[idx]=entry; else history.push(entry);
+  if(!moved.includes(id)){moved.push(id);saveM(moved);}
+  saveH(history);renderHistory();renderMatchs();console.log(`✅ ${id} → ${result} (${score})`);
+};
+
+/* ══ NAVIGATION ══ */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  const btn=document.getElementById('btn-'+id); if(btn)btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='histo')renderHistory(); if(id==='matchs')renderMatchs();
+}
+function switchSport(s){
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on','st','sf'));
+  document.querySelectorAll('.sport-section').forEach(x=>x.classList.remove('on'));
+  const btn=document.getElementById('stab-'+s); btn.classList.add('on');
+  if(s==='tennis')btn.classList.add('st'); if(s==='foot')btn.classList.add('sf');
+  document.getElementById('ss-'+s).classList.add('on');
+}
+
+/* ══ DATE AUTOMATIQUE ══ */
+function updateDate(){
+  const JOURS=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const MOIS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const now=new Date();
+  const label=`${JOURS[now.getDay()]} ${now.getDate()} ${MOIS[now.getMonth()]} ${now.getFullYear()}`;
+  const el=document.getElementById('date-kicker'); if(el) el.textContent=label;
+  const el2=document.getElementById('date-kicker-matchs'); if(el2) el2.textContent=label+' · Flashscore · ATP Tour';
+  // Planifier le prochain changement à minuit pile
+  const tomorrow=new Date(now); tomorrow.setDate(tomorrow.getDate()+1); tomorrow.setHours(0,0,0,0);
+  setTimeout(updateDate, tomorrow-now);
+}
+
+/* ══ INIT ══ */
+initHistory(); updateDate(); checkExpired(); renderMatchs(); renderHistory(); setInterval(checkExpired,60000);
+</script>
+</body>
+</html>
